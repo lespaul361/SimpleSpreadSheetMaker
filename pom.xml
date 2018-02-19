@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.github.lespaul361</groupId>
+    <artifactId>SimpleSpreadSheet</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <name>EbaySalesReportMonthly</name>
+    <description>A library to act as a way for the plugins to get data from the EbaySales program</description>
+    <url>https://bitbucket.org/lespaul361/ebaysalespluginsecurity</url>
+    <repositories>
+        <repository>
+            <id>osshr</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+    </repositories>
+    <licenses>
+        <license>
+            <name>The Apache Software License 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:git//bitbucket.org/lespaul361/ebaysalespluginsecurity.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:lespaul361:ebaysalespluginsecurity.git</developerConnection>
+        <url>https://bitbucket.org/lespaul361/ebaysalespluginsecurity</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>Charles Hamilton</name>
+            <email>lespaul36@gmail.com</email>
+        </developer>
+    </developers>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.17</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13</version>
+        </dependency>
+    </dependencies>
+</project>
