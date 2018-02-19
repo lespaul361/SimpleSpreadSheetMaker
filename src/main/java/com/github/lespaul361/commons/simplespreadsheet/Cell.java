@@ -3,21 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.github.lespaul361.simplespreadsheet;
+package com.github.lespaul361.commons.simplespreadsheet;
 
 /**
  *
  * @author David Hamilton
  */
-public interface Cell {
+public interface Cell extends Style{
 
     public void setCellRow(int row);
 
     public void setCellColumn(int column);
-
-    public void setCellBold(boolean b);
-
-    public void setCellItalic(boolean b);
 
     public void setCellText(String text);
 
@@ -26,10 +22,6 @@ public interface Cell {
     public int getCellRow();
 
     public int getetCellColumn();
-
-    public boolean isCellBold();
-
-    public boolean isCellItalic();
 
     public String getCellText();
 

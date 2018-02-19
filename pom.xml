@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.lespaul361</groupId>
-    <artifactId>SimpleSpreadSheet</artifactId>
+    <artifactId>Commons-SimpleSpreadSheet</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>EbaySalesReportMonthly</name>
-    <description>A library to act as a way for the plugins to get data from the EbaySales program</description>
-    <url>https://bitbucket.org/lespaul361/ebaysalespluginsecurity</url>
+    <name>SimpleSpreadSheet</name>
+    <description>A library to simplify different spreadsheet types</description>
+    <url>https://bitbucket.org/lespaul361/simplespreadsheet</url>
     <repositories>
         <repository>
             <id>osshr</id>
@@ -21,9 +21,9 @@
         </license>
     </licenses>
     <scm>
-        <connection>scm:git:git//bitbucket.org/lespaul361/ebaysalespluginsecurity.git</connection>
-        <developerConnection>scm:git:git@bitbucket.org:lespaul361:ebaysalespluginsecurity.git</developerConnection>
-        <url>https://bitbucket.org/lespaul361/ebaysalespluginsecurity</url>
+        <connection>scm:git:git//bitbucket.org/lespaul361/simplespreadsheet.git</connection>
+        <developerConnection>scm:git:git@bitbucket.org:lespaul361:simplespreadsheet.git</developerConnection>
+        <url>https://bitbucket.org/lespaul361/simplespreadsheet</url>
     </scm>
     <developers>
         <developer>
