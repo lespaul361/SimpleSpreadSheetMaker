@@ -9,8 +9,6 @@ package com.github.lespaul361.commons.simplespreadsheet;
  *
  * @author David Hamilton
  */
-public class WorkBook implements FileFormats{
-
-    
+public class WorkBook implements FileFormats {
 
 }
