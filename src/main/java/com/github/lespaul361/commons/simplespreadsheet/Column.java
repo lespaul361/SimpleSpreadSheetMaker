@@ -7,14 +7,16 @@ package com.github.lespaul361.commons.simplespreadsheet;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
  * @author David Hamilton
  */
-public class Column {
+public class Column implements Serializable {
 
     public static final String PROP_COLUMNNUMBER = "PROP_COLUMNNUMBER";
     public static final String PROP_CELLS = "PROP_CELLS";
@@ -23,6 +25,22 @@ public class Column {
     private List<Cell> cells = new ArrayList<>();
     private Style style = new Style();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
+    private final Sheet sheet;
+    private static final long serialVersionUID = -52755945069593L;
+
+    private Column(Sheet sheet) {
+        this.sheet = sheet;
+    }
+
+    /**
+     * Gets a new instance of the Column class
+     *
+     * @param sheet the sheet this column is attached to
+     * @return a Column class
+     */
+    public static Column getInstance(Sheet sheet) {
+        return new Column(sheet);
+    }
 
     /**
      * @return the columnNumber
@@ -104,4 +122,27 @@ public class Column {
     public void addNotificationListener(String propertyName, PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 79 * hash + this.columnNumber;
+        hash = 79 * hash + Objects.hashCode(this.cells);
+        hash = 79 * hash + Objects.hashCode(this.style);
+        hash = 79 * hash + Objects.hashCode(this.sheet);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Column other = (Column) obj;
+        return other.hashCode() == obj.hashCode();
+    }
+
 }

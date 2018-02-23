@@ -9,6 +9,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -23,6 +24,15 @@ public class Row {
     private List<Cell> cells = new ArrayList<>();
     private Style style = new Style();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
+    private final Sheet sheet;
+
+    private Row(Sheet sheet) {
+        this.sheet = sheet;
+    }
+
+    public static Row getInstance(Sheet sheet) {
+        return new Row(sheet);
+    }
 
     /**
      * @return the rowNumber
@@ -104,4 +114,27 @@ public class Row {
     public void addNotificationListener(String propertyName, PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 83 * hash + this.rowNumber;
+        hash = 83 * hash + Objects.hashCode(this.cells);
+        hash = 83 * hash + Objects.hashCode(this.style);
+        hash = 83 * hash + Objects.hashCode(this.sheet);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Row other = (Row) obj;
+        return other.hashCode() == this.hashCode();
+    }
+
 }

@@ -8,13 +8,15 @@ package com.github.lespaul361.commons.simplespreadsheet;
 import java.awt.Font;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
+import java.util.Objects;
 import javax.swing.JLabel;
 
 /**
  *
  * @author David Hamilton
  */
-public class Style {
+public class Style implements Serializable {
 
     public static final String PROP_BOLD = "PROP_BOLD";
     public static final String PROP_ITALIC = "PROP_ITALIC";
@@ -25,6 +27,14 @@ public class Style {
     private boolean underline = false;
     private Font font = new JLabel().getFont();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
+    private static final long serialVersionUID = -527559450690L;
+
+    /**
+     * Creates a new instance of the class
+     *
+     */
+    public Style() {
+    }
 
     /**
      * @return the bold
@@ -122,4 +132,27 @@ public class Style {
     public void addNotificationListener(String propertyName, PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + (this.bold ? 1 : 0);
+        hash = 83 * hash + (this.italic ? 1 : 0);
+        hash = 83 * hash + (this.underline ? 1 : 0);
+        hash = 83 * hash + Objects.hashCode(this.font);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Style other = (Style) obj;
+        return true;
+    }
+
 }

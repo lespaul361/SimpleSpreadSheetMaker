@@ -5,10 +5,16 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author David Hamilton
  */
-public class WorkBook implements FileFormats {
+public class WorkBook implements FileFormats, Serializable {
 
+    private List<Sheet> sheets = new ArrayList<>();
+    private static final long serialVersionUID = -527556904949593L;
 }

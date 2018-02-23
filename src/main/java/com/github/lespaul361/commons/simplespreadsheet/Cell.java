@@ -7,12 +7,14 @@ package com.github.lespaul361.commons.simplespreadsheet;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
  * @author David Hamilton
  */
-public class Cell {
+public class Cell implements Serializable {
 
     public static final String PROP_ROW = "PROP_ROW";
     public static final String PROP_COLUMN = "PROP_COLUMN";
@@ -23,8 +25,18 @@ public class Cell {
     private int column = 0;
     private String text = "";
     private Function function = null;
-    private Style style=new Style();
+    private Style style = new Style();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
+    private static final long serialVersionUID = -5294506904949593L;
+    private final Sheet sheet;
+
+    private Cell(Sheet sheet) {
+        this.sheet = sheet;
+    }
+
+    public Cell createInstance(Sheet sheet) {
+        return new Cell(sheet);
+    }
 
     /**
      * @return the row
@@ -138,4 +150,29 @@ public class Cell {
         this.style = style;
         propertyChangeSupport.firePropertyChange(PROP_STYLE, oldStyle, style);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.row;
+        hash = 97 * hash + this.column;
+        hash = 97 * hash + Objects.hashCode(this.text);
+        hash = 97 * hash + Objects.hashCode(this.function);
+        hash = 97 * hash + Objects.hashCode(this.style);
+        hash = 97 * hash + Objects.hashCode(this.sheet);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Cell other = (Cell) obj;
+        return (other.hashCode() == obj.hashCode());
+    }
+
 }
