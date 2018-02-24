@@ -5,89 +5,99 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
+import java.awt.Font;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
+import javax.swing.JLabel;
 
 /**
  *
  * @author David Hamilton
  */
-public class Column implements Serializable {
+public abstract class AbstractStyle implements Serializable,Style {
 
-    public static final String PROP_COLUMNNUMBER = "PROP_COLUMNNUMBER";
-    public static final String PROP_CELLS = "PROP_CELLS";
-    public static final String PROP_STYLE = "PROP_STYLE";
-    private int columnNumber = 0;
-    private List<Cell> cells = new ArrayList<>();
-    private Style style = new ColumnStyle();
+    public static final String PROP_BOLD = "PROP_BOLD";
+    public static final String PROP_ITALIC = "PROP_ITALIC";
+    public static final String PROP_UNDERLINE = "PROP_UNDERLINE";
+    public static final String PROP_FONT = "PROP_FONT";
+    private boolean bold = false;
+    private boolean italic = false;
+    private boolean underline = false;
+    private Font font = new JLabel().getFont();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-    private final Sheet sheet;
-    private static final long serialVersionUID = -52755945069593L;
-
-    private Column(Sheet sheet) {
-        this.sheet = sheet;
-    }
+    private static final long serialVersionUID = -527559450690L;
 
     /**
-     * Gets a new instance of the Column class
+     * Creates a new instance of the class
      *
-     * @param sheet the sheet this column is attached to
-     * @return a Column class
      */
-    public static Column getInstance(Sheet sheet) {
-        return new Column(sheet);
+    public AbstractStyle() {
     }
 
     /**
-     * @return the columnNumber
+     * @return the bold
      */
-    protected int getColumnNumber() {
-        return columnNumber;
+    public boolean isBold() {
+        return bold;
     }
 
     /**
-     * @param columnNumber the columnNumber to set
+     * @param bold the bold to set
      */
-    protected void setColumnNumber(int columnNumber) {
-        int oldColumnNumber = this.columnNumber;
-        this.columnNumber = columnNumber;
-        propertyChangeSupport.firePropertyChange(PROP_COLUMNNUMBER, oldColumnNumber, columnNumber);
+    public void setBold(boolean bold) {
+        boolean oldBold = this.bold;
+        this.bold = bold;
+        propertyChangeSupport.firePropertyChange(PROP_BOLD, oldBold, bold);
     }
 
     /**
-     * @return the cells
+     * @return the italic
      */
-    public List<Cell> getCells() {
-        return cells;
+    public boolean isItalic() {
+        return italic;
     }
 
     /**
-     * @param cells the cells to set
+     * @param italic the italic to set
      */
-    public void setCells(List<Cell> cells) {
-        java.util.List<com.github.lespaul361.commons.simplespreadsheet.Cell> oldCells = this.cells;
-        this.cells = cells;
-        propertyChangeSupport.firePropertyChange(PROP_CELLS, oldCells, cells);
+    public void setItalic(boolean italic) {
+        boolean oldItalic = this.italic;
+        this.italic = italic;
+        propertyChangeSupport.firePropertyChange(PROP_ITALIC, oldItalic, italic);
     }
 
     /**
-     * @return the style
+     * @return the underline
      */
-    public Style getStyle() {
-        return style;
+    public boolean isUnderline() {
+        return underline;
     }
 
     /**
-     * @param style the style to set
+     * @param underline the underline to set
      */
-    public void setStyle(Style style) {
-        com.github.lespaul361.commons.simplespreadsheet.Style oldStyle = this.style;
-        this.style = style;
-        propertyChangeSupport.firePropertyChange(PROP_STYLE, oldStyle, style);
+    public void setUnderline(boolean underline) {
+        boolean oldUnderline = this.underline;
+        this.underline = underline;
+        propertyChangeSupport.firePropertyChange(PROP_UNDERLINE, oldUnderline, underline);
+    }
+
+    /**
+     * @return the font
+     */
+    public Font getFont() {
+        return font;
+    }
+
+    /**
+     * @param font the font to set
+     */
+    public void setFont(Font font) {
+        java.awt.Font oldFont = this.font;
+        this.font = font;
+        propertyChangeSupport.firePropertyChange(PROP_FONT, oldFont, font);
     }
 
     /**
@@ -125,11 +135,11 @@ public class Column implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + this.columnNumber;
-        hash = 79 * hash + Objects.hashCode(this.cells);
-        hash = 79 * hash + Objects.hashCode(this.style);
-        hash = 79 * hash + Objects.hashCode(this.sheet);
+        int hash = 7;
+        hash = 83 * hash + (this.bold ? 1 : 0);
+        hash = 83 * hash + (this.italic ? 1 : 0);
+        hash = 83 * hash + (this.underline ? 1 : 0);
+        hash = 83 * hash + Objects.hashCode(this.font);
         return hash;
     }
 
@@ -141,8 +151,8 @@ public class Column implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Column other = (Column) obj;
-        return other.hashCode() == obj.hashCode();
+        final Style other = (Style) obj;
+        return true;
     }
 
 }

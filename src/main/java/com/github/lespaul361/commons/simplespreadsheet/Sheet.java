@@ -26,10 +26,10 @@ public class Sheet implements Serializable {
     private String sheetName = "";
     private int sheetNumber = 0;
     List<Row> rows = new ArrayList<>();
-    private Style style = new Style();
+    private Style style = new SheetStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
-    private Sheet(int sheetNumber) {
+     Sheet(int sheetNumber) {
         this.sheetNumber = sheetNumber;
         this.sheetName = "Sheet " + this.sheetNumber;
     }
@@ -323,7 +323,7 @@ public class Sheet implements Serializable {
     /**
      * @param sheetNumber the sheetNumber to set
      */
-    public void setSheetNumber(int sheetNumber) {
+    protected void setSheetNumber(int sheetNumber) {
         int oldSheetNumber = this.sheetNumber;
         this.sheetNumber = sheetNumber;
         propertyChangeSupport.firePropertyChange(PROP_SHEETNUMBER, oldSheetNumber, sheetNumber);

@@ -22,7 +22,7 @@ public class Row {
     public static final String PROP_STYLE = "PROP_STYLE";
     private int rowNumber = 0;
     private List<Cell> cells = new ArrayList<>();
-    private Style style = new Style();
+    private Style style = new RowStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private final Sheet sheet;
 

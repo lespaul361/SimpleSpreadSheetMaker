@@ -25,7 +25,7 @@ public class Cell implements Serializable {
     private int column = 0;
     private String text = "";
     private Function function = null;
-    private Style style = new Style();
+    private Style style = new CellStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private static final long serialVersionUID = -5294506904949593L;
     private final Sheet sheet;
