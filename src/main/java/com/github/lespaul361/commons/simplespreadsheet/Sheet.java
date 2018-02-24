@@ -29,7 +29,7 @@ public class Sheet implements Serializable {
     private Style style = new SheetStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
-     Sheet(int sheetNumber) {
+    Sheet(int sheetNumber) {
         this.sheetNumber = sheetNumber;
         this.sheetName = "Sheet " + this.sheetNumber;
     }
