@@ -21,7 +21,7 @@ public class Row {
     public static final String PROP_CELLS = "PROP_CELLS";
     public static final String PROP_STYLE = "PROP_STYLE";
     private int rowNumber = 0;
-    private List<Cell> cells = new ArrayList<>();
+    private List<BasicCell> cells = new ArrayList<>();
     private Style style = new RowStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private final Sheet sheet;
@@ -53,15 +53,15 @@ public class Row {
     /**
      * @return the cells
      */
-    public List<Cell> getCells() {
+    public List<BasicCell> getCells() {
         return cells;
     }
 
     /**
      * @param cells the cells to set
      */
-    public void setCells(List<Cell> cells) {
-        java.util.List<com.github.lespaul361.commons.simplespreadsheet.Cell> oldCells = this.cells;
+    public void setCells(List<BasicCell> cells) {
+        java.util.List<com.github.lespaul361.commons.simplespreadsheet.BasicCell> oldCells = this.cells;
         this.cells = cells;
         propertyChangeSupport.firePropertyChange(PROP_CELLS, oldCells, cells);
     }

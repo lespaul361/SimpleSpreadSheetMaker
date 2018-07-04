@@ -6,117 +6,91 @@
 package com.github.lespaul361.commons.simplespreadsheet;
 
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-import java.io.Serializable;
-import java.util.Objects;
 
 /**
  *
  * @author David Hamilton
  */
-public class Cell implements Serializable {
+public interface Cell {
 
     public static final String PROP_ROW = "PROP_ROW";
     public static final String PROP_COLUMN = "PROP_COLUMN";
     public static final String PROP_TEXT = "PROP_TEXT";
     public static final String PROP_FUNCTION = "PROP_FUNCTION";
     public static final String PROP_STYLE = "PROP_STYLE";
-    private int row = 0;
-    private int column = 0;
-    private String text = "";
-    private Function function = null;
-    private Style style = new CellStyle();
-    private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-    private static final long serialVersionUID = -5294506904949593L;
-    private final Sheet sheet;
-
-    private Cell(Sheet sheet) {
-        this.sheet = sheet;
-    }
-
-    public Cell createInstance(Sheet sheet) {
-        return new Cell(sheet);
-    }
 
     /**
-     * @return the row
+     * Creates a cell instance
+     *
+     * @param sheet The parent sheet
+     * @return a cell object
      */
-    public int getRow() {
-        return row;
-    }
+    public Cell createInstance(Sheet sheet);
 
     /**
-     * @param row the row to set
+     * Gets the row number. 0 based.
+     *
+     * @return the row number. 0 based
      */
-    public void setRow(int row) {
-        int oldRow = this.row;
-        this.row = row;
-        propertyChangeSupport.firePropertyChange(PROP_ROW, oldRow, row);
-    }
+    public int getRow();
 
     /**
-     * @return the column
+     * Sets the row number. 0 based.
+     *
+     * @param row the integer value of the row. 0 based
      */
-    public int getColumn() {
-        return column;
-    }
+    public void setRow(int row);
 
     /**
-     * @param column the column to set
+     * Gets the column number. 0 based.
+     *
+     * @return the column number. 0 based
      */
-    public void setColumn(int column) {
-        int oldColumn = this.column;
-        this.column = column;
-        propertyChangeSupport.firePropertyChange(PROP_COLUMN, oldColumn, column);
-    }
+    public int getColumn();
 
     /**
-     * @return the text
+     * Sets the column number. 0 based.
+     *
+     * @param column the integer value of the column. 0 based
      */
-    public String getText() {
-        return text;
-    }
+    public void setColumn(int column);
 
     /**
-     * @param text the text to set
+     * Gets the text value of the cell
+     *
+     * @return a String with the cell value
      */
-    public void setText(String text) {
-        java.lang.String oldText = this.text;
-        this.text = text;
-        propertyChangeSupport.firePropertyChange(PROP_TEXT, oldText, text);
-    }
+    public String getText();
 
     /**
-     * @return the function
+     * Sets the text value of the cell
+     *
+     * @param text A String with the text
      */
-    public Function getFunction() {
-        return function;
-    }
+    public void setText(String text);
 
     /**
-     * @param function the function to set
+     * Gets the {@link Function} function of the cell
+     *
+     * @return the {@link Function} function used in this cell;
      */
-    public void setFunction(Function function) {
-        com.github.lespaul361.commons.simplespreadsheet.Function oldFunction = this.function;
-        this.function = function;
-        propertyChangeSupport.firePropertyChange(PROP_FUNCTION, oldFunction, function);
-    }
+    public Function getFunction();
 
     /**
-     * Add a PropertyChangeListener for a specific property. The listener will
-     * be invoked only when a call on firePropertyChange names that specific
-     * property. The same listener object may be added more than once. For each
-     * property, the listener will be invoked the number of times it was added
-     * for that property. If propertyName or listener is null, no exception is
-     * thrown and no action is taken.
+     * Sets the {@link Function} of this cell
+     *
+     * @param function the {@link Function} function to use for this cell
+     */
+    public void setFunction(Function function);
+
+    /**
+     * Add a PropertyChangeListener for property changes.
      *
      * @param listener the PropertyChangeListener to add
      * @see PropertyChangeListener
      * @see PropertyChangeSupport
      */
-    public void addNotificationListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
+    public void addNotificationListener(PropertyChangeListener listener);
 
     /**
      * Add a PropertyChangeListener for a specific property. The listener will
@@ -131,48 +105,39 @@ public class Cell implements Serializable {
      * @see PropertyChangeListener
      * @see PropertyChangeSupport
      */
-    public void addNotificationListener(String propertyName, PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
-    }
+    public void addNotificationListener(String propertyName, PropertyChangeListener listener);
 
     /**
-     * @return the style
+     * Remove a PropertyChangeListener property changes.
+     *
+     * @param listener the PropertyChangeListener to add
+     * @see PropertyChangeListener
+     * @see PropertyChangeSupport
      */
-    public Style getStyle() {
-        return style;
-    }
+    public void removeNotificationListener(PropertyChangeListener listener);
 
     /**
-     * @param style the style to set
+     * Remove a PropertyChangeListener for a specific property. If propertyName
+     * or listener is null, no exception is thrown and no action is taken.
+     *
+     * @param propertyName - The name of the property to listen on.
+     * @param listener - The PropertyChangeListener to be added
+     * @see PropertyChangeListener
+     * @see PropertyChangeSupport
      */
-    public void setStyle(Style style) {
-        com.github.lespaul361.commons.simplespreadsheet.Style oldStyle = this.style;
-        this.style = style;
-        propertyChangeSupport.firePropertyChange(PROP_STYLE, oldStyle, style);
-    }
+    public void removeNotificationListener(String propertyName, PropertyChangeListener listener);
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.row;
-        hash = 97 * hash + this.column;
-        hash = 97 * hash + Objects.hashCode(this.text);
-        hash = 97 * hash + Objects.hashCode(this.function);
-        hash = 97 * hash + Objects.hashCode(this.style);
-        hash = 97 * hash + Objects.hashCode(this.sheet);
-        return hash;
-    }
+    /**
+     * Gets the {@link Style} style of the cell
+     *
+     * @return the {@link Style} style
+     */
+    public Style getStyle();
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Cell other = (Cell) obj;
-        return (other.hashCode() == obj.hashCode());
-    }
-
+    /**
+     * Sets the {@link Style} style of the cell
+     *
+     * @param style the {@link Style} style to set for the cell
+     */
+    public void setStyle(Style style);
 }
