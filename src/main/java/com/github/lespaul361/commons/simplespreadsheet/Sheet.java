@@ -156,8 +156,8 @@ public class Sheet implements Serializable {
         Iterator<Row> iterator = rows.iterator();
         while (iterator.hasNext()) {
             Row row = iterator.next();
-            List<BasicCell> updatedList = new ArrayList<>();
-            List<BasicCell> currentList = row.getCells();
+            List<Cell> updatedList = new ArrayList<>();
+            List<Cell> currentList = row.getCells();
             for (int i = 0; i < currentList.size(); i++) {
                 if (i != columnNumber) {
                     updatedList.add(currentList.get(i));
@@ -197,7 +197,7 @@ public class Sheet implements Serializable {
      * @throws ArrayIndexOutOfBoundsException thrown when the indexes are out of
      * range
      */
-    public BasicCell getCell(int rowNumber, int columnNumber) throws ArrayIndexOutOfBoundsException {
+    public Cell getCell(int rowNumber, int columnNumber) throws ArrayIndexOutOfBoundsException {
         if (rowNumber < 0) {
             throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
         }
@@ -226,7 +226,7 @@ public class Sheet implements Serializable {
      * @throws ArrayIndexOutOfBoundsException thrown with rowNumber or
      * columnNumber are less than 0
      */
-    public void setCell(int rowNumber, int columnNumber, BasicCell cell) throws ArrayIndexOutOfBoundsException {
+    public void setCell(int rowNumber, int columnNumber, Cell cell) throws ArrayIndexOutOfBoundsException {
         if (rowNumber < 0) {
             throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
         }
