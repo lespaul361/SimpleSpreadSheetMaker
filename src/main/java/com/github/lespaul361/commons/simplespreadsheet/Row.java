@@ -7,34 +7,62 @@ package com.github.lespaul361.commons.simplespreadsheet;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 /**
+ * Contains information about a row of cells
  *
  * @author David Hamilton
  */
-public class Row {
+public class Row implements Serializable{
 
-    public static final String PROP_ROWNUMBER = "PROP_ROWNUMBER";
+    /**
+     * The property name for the change event when a row number changes
+     */
+    public static final String PROP_ROW_NUMBER = "PROP_ROW_NUMBER";
+    /**
+     * The property name for the change event when a cell is added or removed
+     */
     public static final String PROP_CELLS = "PROP_CELLS";
+    /**
+     * The property name for the change event when the style of this row is
+     * changed
+     */
     public static final String PROP_STYLE = "PROP_STYLE";
-    private int rowNumber = 0;
+    private int rowNumber = -1;
     private List<Cell> cells = new ArrayList<>();
     private Style style = new RowStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
-    private final Sheet sheet;
+    private Sheet sheet;
+    private static final long serialVersionUID = -5275594549593L;
 
-    private Row(Sheet sheet) {
+    /**
+     * Sets the sheet this row is a part of
+     *
+     * @param sheet the parent sheet
+     * @see Sheet
+     */
+    protected void setSheet(Sheet sheet) {
         this.sheet = sheet;
     }
 
-    public static Row getInstance(Sheet sheet) {
-        return new Row(sheet);
+    /**
+     * Creates a new instance of a Row
+     *
+     * @param sheet the sheet this row is attached to
+     * @return
+     */
+    static Row getInstance(Sheet sheet) {
+        Row r = new Row();
+        r.setSheet(sheet);
+        return r;
     }
 
     /**
+     * 
      * @return the rowNumber
      */
     protected int getRowNumber() {
@@ -47,7 +75,7 @@ public class Row {
     protected void setRowNumber(int rowNumber) {
         int oldRowNumber = this.rowNumber;
         this.rowNumber = rowNumber;
-        propertyChangeSupport.firePropertyChange(PROP_ROWNUMBER, oldRowNumber, rowNumber);
+        propertyChangeSupport.firePropertyChange(PROP_ROW_NUMBER, oldRowNumber, rowNumber);
     }
 
     /**

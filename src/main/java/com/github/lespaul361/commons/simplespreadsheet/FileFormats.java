@@ -11,8 +11,16 @@ package com.github.lespaul361.commons.simplespreadsheet;
  */
 public interface FileFormats {
 
-    public enum AllowedFileTypeForSaving {
-
-       XLS, XLSX, ODF, PDF;
+    public enum AllowedFileTypes {
+/**
+         * Excel 1997-2007 format
+         */
+        XLS,
+        /**
+         * Excel 2007+ open format
+         */
+        XLSX,
+        ODF,
+        PDF;
     }
 }

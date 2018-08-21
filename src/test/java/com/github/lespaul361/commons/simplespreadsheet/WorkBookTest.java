@@ -42,7 +42,7 @@ public class WorkBookTest {
     }
 
     /**
-     * Test of getInstaceSheet method, of class WorkBook.
+     * Test of getInstanceSheet method, of class WorkBook.
      */
     @Test
     public void testGetInstaceSheet() {

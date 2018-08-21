@@ -17,12 +17,7 @@ public class WorkBook implements FileFormats, Serializable {
 
     private List<Sheet> sheets = new ArrayList<>();
     private static final long serialVersionUID = -527556904949593L;
-
-    /**
-     * Constructs a new <code>WorkBook</code> object
-     */
-    public WorkBook() {
-    }
+    private AllowedFileTypes fileType = null;
 
     /**
      * Gets a new <code>Sheet</code> object
@@ -30,8 +25,9 @@ public class WorkBook implements FileFormats, Serializable {
      * @return a new Sheet
      * @see Sheet
      */
-    public Sheet getInstaceSheet() {
+    public Sheet getInstanceSheet(AllowedFileTypes fileType) {
         Sheet sheet = new Sheet(sheets.size() + 1);
+        this.fileType=fileType;
         sheets.add(sheet);
         return sheet;
     }

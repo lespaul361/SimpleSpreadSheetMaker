@@ -8,6 +8,8 @@ package com.github.lespaul361.commons.simplespreadsheet;
 import java.beans.PropertyChangeListener;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -17,6 +19,7 @@ import org.junit.Test;
  * @author David Hamilton
  */
 public class SheetTest {
+    WorkBook workBook=new WorkBook();
     
     public SheetTest() {
     }
@@ -43,11 +46,8 @@ public class SheetTest {
     @Test
     public void testAddRow_Row() {
         System.out.println("addRow");
-        Row row = null;
-        Sheet instance = null;
-        instance.addRow(row);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Sheet sheet=workBook.getSheet("Sheet 1");
+        Row row=sheet.c
     }
 
     /**

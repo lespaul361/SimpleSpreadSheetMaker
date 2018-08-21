@@ -5,13 +5,14 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
+import com.github.lespaul361.commons.simplespreadsheet.exceptions.LocationExistsException;
+import java.awt.Point;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 
 /**
  *
@@ -21,13 +22,19 @@ public class Sheet implements Serializable {
 
     private static final long serialVersionUID = -5275594507204949593L;
     public static final String PROP_STYLE = "PROP_STYLE";
-    public static final String PROP_SHEETNAME = "PROP_SHEETNAME";
-    public static final String PROP_SHEETNUMBER = "PROP_SHEETNUMBER";
+    public static final String PROP_SHEET_NAME = "PROP_SHEET_NAME";
+    public static final String PROP_SHEET_NUMBER = "PROP_SHEET_NUMBER";
+    public static final String PROP_SHEET_ROW = "PROP_SHEET_ROW";
+    public static final String PROP_SHEET_COLUMN = "PROP_SHEET_COLUMN";
     private String sheetName = "";
     private int sheetNumber = 0;
-    List<Row> rows = new ArrayList<>();
+    //row is x and column is y
+    private Map<Point, Cell> cellMap = new HashMap<>();
     private Style style = new SheetStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
+    private int rowCount = 0;
+    private int columnCount = 0;
+    private boolean isIgnorePropertyChange=false;
 
     Sheet(int sheetNumber) {
         this.sheetNumber = sheetNumber;
@@ -41,32 +48,46 @@ public class Sheet implements Serializable {
      * @see Row
      */
     public void addRow(Row row) {
-        rows.add(row);
-        row.setRowNumber(rows.size() - 1);
+        try {
+            addRow(row, rowCount);
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
     }
 
     /**
-     * Adds a row to the specified index. If it is before the end then the other
-     * rows get shifted up
+     * Adds a row to the specified index.If cells are already in use in the row
+     * then a {@link LocationExistsException} will be thrown
      *
      * @param row the Row to add
      * @param rowNumber the index of the row
      * @throws ArrayIndexOutOfBoundsException thrown when <code>rownumber</code>
      * is less than 0
+     * @throws LocationExistsException
+     * @throw ArrayIndexOutOfBoundsException
      * @see Row
      */
-    public void addRow(Row row, int rowNumber) throws ArrayIndexOutOfBoundsException {
+    public void addRow(Row row, int rowNumber)
+            throws ArrayIndexOutOfBoundsException, LocationExistsException {
         if (rowNumber < 0) {
             throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
         }
-        if (rowNumber == rows.size()) {
-            addRow(row);
-            return;
+
+        if (rowNumber < rowCount) {
+            int c = rowInUse(rowNumber);
+            if (c < 0) {
+                throw new LocationExistsException(new Point(rowNumber, c));
+            }
         }
-        for (int i = rows.size(); i < rowNumber; i++) {
-            rows.add(null);
-        }
-        addRow(row);
+
+        Map<Point, Cell> ret = new HashMap<>();
+        row.getCells().forEach((cell) -> {
+            Point loc = new Point(cell.getRow(), cell.getRow());
+            ret.put(loc, cell);
+        });
+        this.cellMap = ret;
+        checkCounts();
+        firePropertyChange(PROP_SHEET_ROW, null, row);
     }
 
     /**
@@ -74,15 +95,10 @@ public class Sheet implements Serializable {
      *
      * @param row the row to remove
      * @return boolean saying if it is successful
+     * @see Row
      */
     public boolean removeRow(Row row) {
-        try {
-            return removeRow(row.getRowNumber());
-        } catch (Exception e) {
-            e.printStackTrace(System.out);
-            return false;
-        }
-
+        return removeRow(row.getRowNumber());
     }
 
     /**
@@ -92,81 +108,48 @@ public class Sheet implements Serializable {
      * @return boolean saying if it is successful
      * @throws ArrayIndexOutOfBoundsException thrown when the index is outside
      * of the row array range
+     * @see Row
      */
     public boolean removeRow(int rowNumber) throws ArrayIndexOutOfBoundsException {
         if (rowNumber < 0) {
             throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
         }
         if (rowNumber < 0) {
-            throw new ArrayIndexOutOfBoundsException("Row Number Is Greater Than " + (rows.size() - 1));
+            throw new ArrayIndexOutOfBoundsException("Row Number Is Greater Than " + (this.rowCount - 1));
         }
-        Iterator<Row> iterator = rows.iterator();
+        Map<Point, Cell> ret = new HashMap<>();
+        Iterator<Point> iterator = this.cellMap.keySet().iterator();
+        Point curPoint = null;
         while (iterator.hasNext()) {
-            Row row = iterator.next();
-            if (row.getRowNumber() < rowNumber) {
+            curPoint = iterator.next();
+            if (curPoint.x < rowNumber) {
+                ret.put(curPoint, this.cellMap.get(curPoint));
                 continue;
             }
-            if (row.getRowNumber() == rowNumber) {
-                iterator.remove();
+            if (curPoint.x == rowNumber) {
+                continue;
             }
-            row.setRowNumber(row.getRowNumber() - 1);
+            Point newPoint=new Point(curPoint.x - 1, curPoint.y);
+            Cell cell=this.cellMap.get(curPoint);
+            cell.setRow(newPoint.x);
+            ret.put(newPoint,cell);
         }
+        this.cellMap = ret;
+        checkCounts();
         return true;
     }
 
     /**
-     * Removes a column by object
+     * Inserts a {@link Row} at the provided row number and shifts the cells at
+     * that number and higher up one
      *
-     * @param column the <code>Column</code> to remove
-     * @return boolean saying if it is successful
-     */
-    public boolean removeColumn(Column column) {
-        int index = column.getColumnNumber();
-        try {
-            removeColumn(index);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * Removes a column by column number
+     * @param row the row to insert
+     * @param rowNumber the row number to insert the {@link Row} at. Zero based
+     * @see Row
      *
-     * @param columnNumber the column number to remove
-     * @return boolean saying if it is successful
-     * @throws ArrayIndexOutOfBoundsException thrown when the index is outside
-     * of the column array range
      */
-    private boolean removeColumn(int columnNumber) throws ArrayIndexOutOfBoundsException {
-        if (columnNumber < 0) {
-            throw new ArrayIndexOutOfBoundsException("Column Number Is Less Than 0");
-        }
-        boolean isLongEnough = false;
-        for (Row row : rows) {
-            if (row.getCells().size() >= columnNumber) {
-                isLongEnough = true;
-                break;
-            }
-        }
-        if (!isLongEnough) {
-            throw new ArrayIndexOutOfBoundsException("Column Number Is Outside The Range");
-        }
+    public void insertRow(Row row, int rowNumber) {
 
-        Iterator<Row> iterator = rows.iterator();
-        while (iterator.hasNext()) {
-            Row row = iterator.next();
-            List<Cell> updatedList = new ArrayList<>();
-            List<Cell> currentList = row.getCells();
-            for (int i = 0; i < currentList.size(); i++) {
-                if (i != columnNumber) {
-                    updatedList.add(currentList.get(i));
-                }
-            }
-            row.setCells(currentList);
-
-        }
-        return true;
     }
 
     /**
@@ -177,15 +160,63 @@ public class Sheet implements Serializable {
      * @throws ArrayIndexOutOfBoundsException thrown when the index is outside
      * of the row array range
      */
-    public Row getRow(int rowNumber) throws ArrayIndexOutOfBoundsException {
-        if (rowNumber < 0) {
-            throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
+    public Row
+            getRow(int rowNumber
+            ) throws ArrayIndexOutOfBoundsException {
+        return null;
+
+    }
+
+    public void addColumn(Column column
+    ) {
+
+    }
+
+    public void addColumn(Column column,
+             int columnNumber
+    ) {
+
+    }
+
+    /**
+     * Removes a column by object
+     *
+     * @param column the <code>Column</code> to remove
+     * @return boolean saying if it is successful
+     * @see Column
+     */
+    public boolean removeColumn(Column column
+    ) {
+        return removeColumn(column
+                .getColumnNumber());
+
+    }
+
+    /**
+     * Removes a column by column number
+     *
+     * @param columnNumber the column number to remove
+     * @return boolean saying if it is successful
+     * @throws ArrayIndexOutOfBoundsException thrown when the index is outside
+     * of the column array range
+     * @see Column
+     */
+    public boolean removeColumn(int columnNumber
+    ) throws ArrayIndexOutOfBoundsException {
+        return true;
+
+    }
+
+    public Column
+            getColumn(int index
+            ) throws ArrayIndexOutOfBoundsException {
+        if (index
+                < 0) {
+            throw new ArrayIndexOutOfBoundsException("Column Number Is Less Than 0");
+
         }
-        if (rowNumber > rows.size()) {
-            throw new ArrayIndexOutOfBoundsException("Row Number Is Greater Than "
-                    + "Row Count");
-        }
-        return rows.get(rowNumber);
+        return null;
+
     }
 
     /**
@@ -197,23 +228,17 @@ public class Sheet implements Serializable {
      * @throws ArrayIndexOutOfBoundsException thrown when the indexes are out of
      * range
      */
-    public Cell getCell(int rowNumber, int columnNumber) throws ArrayIndexOutOfBoundsException {
-        if (rowNumber < 0) {
+    public Cell
+            getCell(int rowNumber,
+                     int columnNumber
+            ) throws ArrayIndexOutOfBoundsException {
+        if (rowNumber
+                < 0) {
             throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
+
         }
-        if (rowNumber >= rows.size()) {
-            throw new ArrayIndexOutOfBoundsException("Row Number Is Greater Than "
-                    + "The Row Array");
-        }
-        Row row = rows.get(rowNumber);
-        if (columnNumber < 0) {
-            throw new ArrayIndexOutOfBoundsException("Column Number Is Less Than 0");
-        }
-        if (row.getCells().size() < columnNumber) {
-            throw new ArrayIndexOutOfBoundsException("Column Number Is Larger Than "
-                    + "The Column Count");
-        }
-        return row.getCells().get(columnNumber);
+        return null;
+
     }
 
     /**
@@ -226,42 +251,49 @@ public class Sheet implements Serializable {
      * @throws ArrayIndexOutOfBoundsException thrown with rowNumber or
      * columnNumber are less than 0
      */
-    public void setCell(int rowNumber, int columnNumber, Cell cell) throws ArrayIndexOutOfBoundsException {
-        if (rowNumber < 0) {
+    public void setCell(int rowNumber,
+             int columnNumber,
+             Cell cell
+    ) throws ArrayIndexOutOfBoundsException {
+        if (rowNumber
+                < 0) {
             throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
+
         }
-        if (columnNumber < 0) {
+        if (columnNumber
+                < 0) {
             throw new ArrayIndexOutOfBoundsException("Column Number Is Less Than 0");
+
         }
-        if (rowNumber > rows.size()) {
-            for (int i = rows.size(); i < rowNumber; i++) {
-                rows.add(null);
-            }
-            Row r = Row.getInstance(this);
-            for (int colNum = 0; colNum < columnNumber; colNum++) {
-                r.getCells().add(null);
-            }
-            r.getCells().add(cell);
-            return;
-        }
-        Row r = rows.get(rowNumber);
-        r.getCells().set(columnNumber, cell);
+
     }
 
     /**
      * @return the style
      */
-    public Style getStyle() {
+    public Style
+            getStyle() {
         return style;
+
     }
 
     /**
      * @param style the style to set
      */
-    public void setStyle(Style style) {
-        com.github.lespaul361.commons.simplespreadsheet.Style oldStyle = this.style;
-        this.style = style;
-        propertyChangeSupport.firePropertyChange(PROP_STYLE, oldStyle, style);
+    public void setStyle(Style style
+    ) {
+        com.github.lespaul361.commons.simplespreadsheet.Style oldStyle
+                = this.style;
+
+        this.style
+                = style;
+
+        propertyChangeSupport
+                .firePropertyChange(PROP_STYLE,
+                         oldStyle,
+                         style
+                );
+
     }
 
     /**
@@ -276,8 +308,12 @@ public class Sheet implements Serializable {
      * @see PropertyChangeListener
      * @see PropertyChangeSupport
      */
-    public void addNotificationListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
+    public void addNotificationListener(PropertyChangeListener listener
+    ) {
+        propertyChangeSupport
+                .addPropertyChangeListener(listener
+                );
+
     }
 
     /**
@@ -293,24 +329,42 @@ public class Sheet implements Serializable {
      * @see PropertyChangeListener
      * @see PropertyChangeSupport
      */
-    public void addNotificationListener(String propertyName, PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+    public void addNotificationListener(String propertyName,
+             PropertyChangeListener listener
+    ) {
+        propertyChangeSupport
+                .addPropertyChangeListener(propertyName,
+                         listener
+                );
+
     }
 
     /**
      * @return the sheetName
      */
-    public String getSheetName() {
+    public String
+            getSheetName() {
         return sheetName;
+
     }
 
     /**
      * @param sheetName the sheetName to set
      */
-    public void setSheetName(String sheetName) {
-        java.lang.String oldSheetName = this.sheetName;
-        this.sheetName = sheetName;
-        propertyChangeSupport.firePropertyChange(PROP_SHEETNAME, oldSheetName, sheetName);
+    public void setSheetName(String sheetName
+    ) {
+        java.lang.String oldSheetName
+                = this.sheetName;
+
+        this.sheetName
+                = sheetName;
+
+        propertyChangeSupport
+                .firePropertyChange(PROP_SHEET_NAME,
+                         oldSheetName,
+                         sheetName
+                );
+
     }
 
     /**
@@ -318,37 +372,132 @@ public class Sheet implements Serializable {
      */
     public int getSheetNumber() {
         return sheetNumber;
+
+    }
+
+    /**
+     * Gets the number of rows in this sheet
+     *
+     * @return <code>int</code> with the number of rows
+     * @see Row
+     */
+    public int getRowCount() {
+        return rowCount;
+
+    }
+
+    /**
+     * Creates a new {@link Row} in the sheet with the row number being -1. The
+     * row is not added to the sheet until
+     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row)} or
+     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row, int)}
+     * is used.
+     *
+     * @return a Row
+     * @see Row
+     * @see Sheet
+     */
+    public Row
+            createRowInstance() {
+        return createRowInstance(-1);
+
+    }
+
+    /**
+     * Creates a new {@link Row} in the sheet with the supplied row number. The
+     * row is not added to the sheet until
+     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row)} or
+     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row, int)}
+     * is used.
+     *
+     * @param rowNumber
+     * @return a Row
+     * @see Row
+     * @see Sheet
+     */
+    public Row
+            createRowInstance(int rowNumber
+            ) throws ArrayIndexOutOfBoundsException {
+        return null;
+
+    }
+
+    private boolean isCellInUse(Point location,
+             Cell cell
+    ) {
+        return (cell
+                .getRow() == location
+                        .getX() && cell
+                        .getColumn() == location
+                        .getY());
+
+    }
+
+    private int rowInUse(int index
+    ) {
+        return -1;
+
+    }
+
+    private void checkCounts() {
+
     }
 
     /**
      * @param sheetNumber the sheetNumber to set
      */
-    protected void setSheetNumber(int sheetNumber) {
-        int oldSheetNumber = this.sheetNumber;
-        this.sheetNumber = sheetNumber;
-        propertyChangeSupport.firePropertyChange(PROP_SHEETNUMBER, oldSheetNumber, sheetNumber);
+    protected void setSheetNumber(int sheetNumber
+    ) {
+        int oldSheetNumber
+                = this.sheetNumber;
+
+        this.sheetNumber
+                = sheetNumber;
+
+        propertyChangeSupport
+                .firePropertyChange(PROP_SHEET_NUMBER,
+                         oldSheetNumber,
+                         sheetNumber
+                );
+
+    }
+
+    /**
+     * Fires the listeners for property changes
+     *
+     * @param property the name of the property
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    protected void firePropertyChange(String property,
+             Object oldValue,
+             Object newValue
+    ) {
+        this.propertyChangeSupport
+                .firePropertyChange(property,
+                         oldValue,
+                         newValue
+                );
+
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.sheetName);
-        hash = 83 * hash + this.sheetNumber;
-        hash = 83 * hash + Objects.hashCode(this.rows);
-        hash = 83 * hash + Objects.hashCode(this.style);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
+    public boolean equals(Object obj
+    ) {
+        if (obj
+                == null) {
             return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Sheet other = (Sheet) obj;
-        return (other.hashCode() == this.hashCode());
-    }
 
+        }
+        if (getClass() != obj
+                .getClass()) {
+            return false;
+
+        }
+        final Sheet other
+                = (Sheet) obj;
+
+        return (other
+                .hashCode() == this.hashCode());
+    }
 }
