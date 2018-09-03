@@ -55,7 +55,7 @@ public class Row implements Serializable{
      * @param sheet the sheet this row is attached to
      * @return
      */
-    static Row getInstance(Sheet sheet) {
+    public static Row getInstance(Sheet sheet) {
         Row r = new Row();
         r.setSheet(sheet);
         return r;
@@ -65,7 +65,7 @@ public class Row implements Serializable{
      * 
      * @return the rowNumber
      */
-    protected int getRowNumber() {
+    public int getRowNumber() {
         return rowNumber;
     }
 

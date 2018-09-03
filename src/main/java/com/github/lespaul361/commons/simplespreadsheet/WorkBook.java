@@ -19,16 +19,38 @@ public class WorkBook implements FileFormats, Serializable {
     private static final long serialVersionUID = -527556904949593L;
     private AllowedFileTypes fileType = null;
 
+    private WorkBook(AllowedFileTypes fileType) {
+        this.fileType = fileType;
+    }
+
+    public static WorkBook getInstance(AllowedFileTypes fileType) {
+        WorkBook ret = new WorkBook(fileType);
+        return ret;
+    }
+
     /**
      * Gets a new <code>Sheet</code> object
      *
      * @return a new Sheet
      * @see Sheet
      */
-    public Sheet getInstanceSheet(AllowedFileTypes fileType) {
-        Sheet sheet = new Sheet(sheets.size() + 1);
-        this.fileType=fileType;
-        sheets.add(sheet);
+    public Sheet getInstanceSheet() {
+        Sheet sheet = new Sheet(this.sheets.size() + 1);
+        this.sheets.add(sheet);
+        return sheet;
+    }
+
+    /**
+     * Gets a new {@link Sheet} object and sets the name
+     *
+     * @param name the name of the {@link Sheet}
+     * @return a new Sheet
+     * @see Sheet
+     */
+    public Sheet getInstanceSheet(String name) {
+        Sheet sheet = new Sheet(this.sheets.size() + 1);
+        this.sheets.add(sheet);
+        sheet.setSheetName(name);
         return sheet;
     }
 
@@ -40,7 +62,7 @@ public class WorkBook implements FileFormats, Serializable {
      * @see List
      */
     public List<Sheet> getSheets() {
-        return sheets;
+        return this.sheets;
     }
 
     /**
@@ -50,7 +72,7 @@ public class WorkBook implements FileFormats, Serializable {
      * @return a Sheet with the same name or null
      */
     public Sheet getSheet(String name) {
-        for (Sheet sheet : sheets) {
+        for (Sheet sheet : this.sheets) {
             if (sheet.getSheetName().equalsIgnoreCase(name)) {
                 return sheet;
             }
@@ -70,10 +92,49 @@ public class WorkBook implements FileFormats, Serializable {
         if (index < 0) {
             throw new ArrayIndexOutOfBoundsException("Index is less that 0");
         }
-        if (index > sheets.size() - 1) {
+        if (index > this.sheets.size() - 1) {
             throw new ArrayIndexOutOfBoundsException("Index is larger than the array size");
         }
 
-        return sheets.get(index);
+        return this.sheets.get(index);
+    }
+
+    /**
+     * Removes a sheet from the workbook
+     *
+     * @param index the index of the sheet
+     * @return the sheet being removed
+     * @throws ArrayIndexOutOfBoundsException
+     * @see Sheet
+     */
+    public Sheet removeSheet(int index) throws ArrayIndexOutOfBoundsException {
+        if (index < 0) {
+            throw new ArrayIndexOutOfBoundsException("Index is less that 0");
+        }
+        if (index > this.sheets.size() - 1) {
+            throw new ArrayIndexOutOfBoundsException("Index is larger than the array size");
+        }
+        Sheet ret = this.sheets.get(index);
+        this.sheets.remove(index);
+        return ret;
+    }
+
+    /**
+     * Removes a sheet from the workbook
+     *
+     * @param sheetName the name of the sheet
+     * @return true if the sheet was found and removed, otherwise false
+     * @throws ArrayIndexOutOfBoundsException
+     * @throws IllegalArgumentException
+     * @see Sheet
+     */
+    public boolean removeSheet(String sheetName) {
+        for (int i = 0; i < sheets.size(); i++) {
+            if (this.sheets.get(i).getSheetName().equalsIgnoreCase(sheetName)) {
+                this.sheets.remove(i);
+                return true;
+            }
+        }
+        return false;
     }
 }

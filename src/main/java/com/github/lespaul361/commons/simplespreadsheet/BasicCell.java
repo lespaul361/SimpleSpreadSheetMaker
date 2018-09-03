@@ -5,7 +5,9 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
+import static java.util.Arrays.asList;
 import java.util.Objects;
 
 /**
@@ -16,13 +18,9 @@ public class BasicCell extends AbstractCell implements Serializable {
 
     private static final long serialVersionUID = -5294506904949593L;
 
-    private BasicCell(Sheet sheet) {
-        super.sheet = sheet;
-    }
-
-    @Override
-    public BasicCell createInstance(Sheet sheet) {
-        return new BasicCell(sheet);
+    BasicCell(Sheet sheet) {
+        super();
+        this.sheet = sheet;
     }
 
     @Override
@@ -46,7 +44,21 @@ public class BasicCell extends AbstractCell implements Serializable {
             return false;
         }
         final BasicCell other = (BasicCell) obj;
-        return (other.hashCode() == obj.hashCode());
+        return (other.hashCode() == hashCode());
+    }
+
+    @Override
+    Cell makeClone() {
+        BasicCell cell = new BasicCell(sheet);
+        cell.function = super.function;
+        cell.row = row;
+        cell.column = column;
+        cell.style = style;
+        cell.text = text;
+        for (PropertyChangeListener l : asList(propertyChangeSupport.getPropertyChangeListeners())) {
+            cell.addNotificationListener(l);
+        }
+        return cell;
     }
 
 }

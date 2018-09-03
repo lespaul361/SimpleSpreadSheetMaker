@@ -29,29 +29,25 @@ public abstract class AbstractCell implements Cell {
     protected final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     protected Sheet sheet;
 
-    public AbstractCell() {
-
-    }
-
     @Override
-    public int getRow() {
+    public int getRowNumber() {
         return row;
     }
 
     @Override
-    public void setRow(int row) {
+    public void setRowNumber(int row) {
         int oldRow = this.row;
         this.row = row;
         propertyChangeSupport.firePropertyChange(PROP_ROW, oldRow, row);
     }
 
     @Override
-    public int getColumn() {
+    public int getColumnNumber() {
         return column;
     }
 
     @Override
-    public void setColumn(int column) {
+    public void setColumnNumber(int column) {
         int oldColumn = this.column;
         this.column = column;
         propertyChangeSupport.firePropertyChange(PROP_COLUMN, oldColumn, column);
@@ -137,4 +133,5 @@ public abstract class AbstractCell implements Cell {
         propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
     }
 
+    abstract Cell makeClone();
 }

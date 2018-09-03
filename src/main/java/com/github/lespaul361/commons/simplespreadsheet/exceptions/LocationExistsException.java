@@ -12,9 +12,11 @@ import java.awt.Point;
  *
  * @author David Hamilton
  */
-public class LocationExistsException extends Exception {
+public class LocationExistsException extends RuntimeException {
 
-    private static final String MESSAGE = "location already has cell(s)";
+    private static final long serialVersionUID = 2341226006267687L;
+    private static final String MESSAGE = "location already has cell(s). Use "
+            + "insert() instead";
     private final Point point;
 
     /**

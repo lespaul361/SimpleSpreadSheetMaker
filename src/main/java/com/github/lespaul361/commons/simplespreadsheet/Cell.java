@@ -20,40 +20,32 @@ public interface Cell {
     public static final String PROP_STYLE = "PROP_STYLE";
 
     /**
-     * Creates a cell instance
-     *
-     * @param sheet The parent sheet
-     * @return a cell object
-     */
-    public Cell createInstance(Sheet sheet);
-
-    /**
      * Gets the row number. 0 based.
      *
      * @return the row number. 0 based
      */
-    public int getRow();
+    public int getRowNumber();
 
     /**
      * Sets the row number. 0 based.
      *
      * @param row the integer value of the row. 0 based
      */
-    public void setRow(int row);
+    public void setRowNumber(int row);
 
     /**
      * Gets the column number. 0 based.
      *
      * @return the column number. 0 based
      */
-    public int getColumn();
+    public int getColumnNumber();
 
     /**
      * Sets the column number. 0 based.
      *
      * @param column the integer value of the column. 0 based
      */
-    public void setColumn(int column);
+    public void setColumnNumber(int column);
 
     /**
      * Gets the text value of the cell
