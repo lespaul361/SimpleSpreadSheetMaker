@@ -107,7 +107,7 @@ public abstract class AbstractCell implements Cell {
         hash = 97 * hash + Objects.hashCode(this.text);
         hash = 97 * hash + Objects.hashCode(this.function);
         hash = 97 * hash + Objects.hashCode(this.style);
-        hash = 97 * hash + Objects.hashCode(this.sheet);
+        //hash = 97 * hash + Objects.hashCode(this.sheet);
         return hash;
     }
 
@@ -132,6 +132,5 @@ public abstract class AbstractCell implements Cell {
     public void removeNotificationListener(String propertyName, PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
     }
-
-    abstract Cell makeClone();
+    
 }

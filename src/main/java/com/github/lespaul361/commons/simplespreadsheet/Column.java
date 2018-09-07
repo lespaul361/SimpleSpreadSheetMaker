@@ -18,10 +18,21 @@ import java.util.Objects;
  */
 public class Column implements Serializable {
 
-    public static final String PROP_COLUMNNUMBER = "PROP_COLUMNNUMBER";
+    /**
+     * The property name for column number changes
+     */
+    public static final String PROP_COLUMN_NUMBER = "PROP_COLUMN_NUMBER";
+    /**
+     * The property name for the change event when a cell is added or removed
+     */
     public static final String PROP_CELLS = "PROP_CELLS";
+    /**
+     * The property name for the change event when the style of this row is
+     * changed
+     */
     public static final String PROP_STYLE = "PROP_STYLE";
-    private int columnNumber = 0;
+
+    private int columnNumber = -1;
     private List<Cell> cells = new ArrayList<>();
     private Style style = new ColumnStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
@@ -43,6 +54,8 @@ public class Column implements Serializable {
     }
 
     /**
+     * Gets the column number
+     *
      * @return the columnNumber
      */
     protected int getColumnNumber() {
@@ -50,23 +63,33 @@ public class Column implements Serializable {
     }
 
     /**
+     * Sets the column number
+     *
      * @param columnNumber the columnNumber to set
      */
     protected void setColumnNumber(int columnNumber) {
         int oldColumnNumber = this.columnNumber;
         this.columnNumber = columnNumber;
-        propertyChangeSupport.firePropertyChange(PROP_COLUMNNUMBER, oldColumnNumber, columnNumber);
+        propertyChangeSupport.firePropertyChange(PROP_COLUMN_NUMBER, oldColumnNumber, columnNumber);
     }
 
     /**
-     * @return the cells
+     * Gets the cells
+     *
+     * @return a List of cells
+     * @see List
+     * @see Cell
      */
     public List<Cell> getCells() {
         return cells;
     }
 
     /**
-     * @param cells the cells to set
+     * Gets the cells
+     *
+     * @param cells a List of cells
+     * @see List
+     * @see Cell
      */
     public void setCells(List<Cell> cells) {
         List<Cell> oldCells = this.cells;
@@ -75,6 +98,8 @@ public class Column implements Serializable {
     }
 
     /**
+     * Gets the style of this column
+     *
      * @return the style
      */
     public Style getStyle() {
@@ -82,6 +107,8 @@ public class Column implements Serializable {
     }
 
     /**
+     * Sets the style of this column
+     *
      * @param style the style to set
      */
     public void setStyle(Style style) {

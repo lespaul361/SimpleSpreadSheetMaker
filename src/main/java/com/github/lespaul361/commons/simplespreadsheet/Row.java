@@ -8,6 +8,7 @@ package com.github.lespaul361.commons.simplespreadsheet;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +18,7 @@ import java.util.Objects;
  *
  * @author David Hamilton
  */
-public class Row implements Serializable{
+public class Row implements Serializable, Cloneable {
 
     /**
      * The property name for the change event when a row number changes
@@ -49,6 +50,10 @@ public class Row implements Serializable{
         this.sheet = sheet;
     }
 
+    private Row(Sheet sheet) {
+        this.sheet = sheet;
+    }
+
     /**
      * Creates a new instance of a Row
      *
@@ -56,13 +61,12 @@ public class Row implements Serializable{
      * @return
      */
     public static Row getInstance(Sheet sheet) {
-        Row r = new Row();
-        r.setSheet(sheet);
-        return r;
+        return new Row(sheet);
     }
 
     /**
-     * 
+     * Gets the row number for this row
+     *
      * @return the rowNumber
      */
     public int getRowNumber() {
@@ -70,6 +74,8 @@ public class Row implements Serializable{
     }
 
     /**
+     * Sets the row number for this row
+     *
      * @param rowNumber the rowNumber to set
      */
     protected void setRowNumber(int rowNumber) {
@@ -79,6 +85,9 @@ public class Row implements Serializable{
     }
 
     /**
+     * Gets the list of cells in the row. The order of the cells in the list is
+     * the same as the column number, nulls are allowed
+     *
      * @return the cells
      */
     public List<Cell> getCells() {
@@ -86,6 +95,9 @@ public class Row implements Serializable{
     }
 
     /**
+     * Sets the cells in the row. The order of the cells in the list is the same
+     * as the column number, nulls are allowed
+     *
      * @param cells the cells to set
      */
     public void setCells(List<Cell> cells) {
@@ -95,6 +107,8 @@ public class Row implements Serializable{
     }
 
     /**
+     * Gets the style for this row
+     *
      * @return the style
      */
     public Style getStyle() {
@@ -102,6 +116,8 @@ public class Row implements Serializable{
     }
 
     /**
+     * Sets the style for this row
+     *
      * @param style the style to set
      */
     public void setStyle(Style style) {
@@ -149,7 +165,7 @@ public class Row implements Serializable{
         hash = 83 * hash + this.rowNumber;
         hash = 83 * hash + Objects.hashCode(this.cells);
         hash = 83 * hash + Objects.hashCode(this.style);
-        hash = 83 * hash + Objects.hashCode(this.sheet);
+        //hash = 83 * hash + Objects.hashCode(this.sheet);
         return hash;
     }
 
@@ -163,6 +179,33 @@ public class Row implements Serializable{
         }
         final Row other = (Row) obj;
         return other.hashCode() == this.hashCode();
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        Row row = new Row(this.sheet);
+        row.rowNumber = rowNumber;
+        row.sheet = sheet;
+        row.style = style;
+        List<Cell> cells = new ArrayList<>();
+        for (Cell cell : this.cells) {
+            if (cell == null) {
+                cells.add(null);
+            } else if (cell instanceof Cloneable) {
+                try {
+                    Method m = cell.getClass().getDeclaredMethod("clone");
+                    m.setAccessible(true);
+                    cells.add((Cell) m.invoke(cell));
+                } catch (Exception e) {
+                    e.printStackTrace(System.out);
+                }
+            }
+        }
+        row.cells = cells;
+        for (PropertyChangeListener l : this.propertyChangeSupport.getPropertyChangeListeners()) {
+            row.propertyChangeSupport.addPropertyChangeListener(l);
+        }
+        return row;
     }
 
 }

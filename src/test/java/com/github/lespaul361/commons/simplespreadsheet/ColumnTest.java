@@ -6,6 +6,7 @@
 package com.github.lespaul361.commons.simplespreadsheet;
 
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,7 +19,18 @@ import org.junit.Test;
  * @author David Hamilton
  */
 public class ColumnTest {
-    
+        WorkBook workBook = WorkBook.getInstance(FileFormats.AllowedFileTypes.XLS);
+    Sheet sheet = workBook.getInstanceSheet("Test");
+    Column column=sheet.c
+            List<Cell> cells = new ArrayList<>();
+
+    {
+        for (int i = 0; i < 10; i++) {
+            cells.add(new BasicCell(sheet));
+        }
+        row.setCells(cells);
+        sheet.addRow(row);
+    }
     public ColumnTest() {
     }
     

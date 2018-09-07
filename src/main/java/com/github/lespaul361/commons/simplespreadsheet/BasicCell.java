@@ -8,7 +8,6 @@ package com.github.lespaul361.commons.simplespreadsheet;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import static java.util.Arrays.asList;
-import java.util.Objects;
 
 /**
  *
@@ -25,14 +24,7 @@ public class BasicCell extends AbstractCell implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + super.row;
-        hash = 97 * hash + super.column;
-        hash = 97 * hash + Objects.hashCode(super.text);
-        hash = 97 * hash + Objects.hashCode(super.function);
-        hash = 97 * hash + Objects.hashCode(super.style);
-        hash = 97 * hash + Objects.hashCode(super.sheet);
-        return hash;
+        return super.hashCode();
     }
 
     @Override
@@ -47,8 +39,14 @@ public class BasicCell extends AbstractCell implements Serializable {
         return (other.hashCode() == hashCode());
     }
 
+    /**
+     * Creates a copy of this cell
+     *
+     * @return a Cell that is a copy of this cell with the notifications
+     * included
+     */
     @Override
-    Cell makeClone() {
+    public Cell clone() {
         BasicCell cell = new BasicCell(sheet);
         cell.function = super.function;
         cell.row = row;
@@ -60,5 +58,4 @@ public class BasicCell extends AbstractCell implements Serializable {
         }
         return cell;
     }
-
 }

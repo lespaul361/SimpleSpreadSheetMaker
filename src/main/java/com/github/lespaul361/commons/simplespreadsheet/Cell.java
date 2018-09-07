@@ -11,7 +11,7 @@ import java.beans.PropertyChangeListener;
  *
  * @author David Hamilton
  */
-public interface Cell {
+public interface Cell extends Cloneable {
 
     public static final String PROP_ROW = "PROP_ROW";
     public static final String PROP_COLUMN = "PROP_COLUMN";
@@ -132,4 +132,5 @@ public interface Cell {
      * @param style the {@link Style} style to set for the cell
      */
     public void setStyle(Style style);
+
 }

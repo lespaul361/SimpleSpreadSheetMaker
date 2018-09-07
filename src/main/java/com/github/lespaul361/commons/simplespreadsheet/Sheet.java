@@ -11,6 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,12 +27,48 @@ import javax.swing.event.EventListenerList;
 public class Sheet implements Serializable {
 
     private static final long serialVersionUID = -5275594507204949593L;
+    /**
+     * Notification for sheet style change
+     */
     public static transient final String PROP_STYLE = "PROP_STYLE";
+    /**
+     * Notification for sheet name change
+     */
     public static transient final String PROP_SHEET_NAME = "PROP_SHEET_NAME";
+    /**
+     * Notification for sheet number change
+     */
     public static transient final String PROP_SHEET_NUMBER = "PROP_SHEET_NUMBER";
-    public static transient final String PROP_SHEET_ROW = "PROP_SHEET_ROW";
-    public static transient final String PROP_SHEET_COLUMN = "PROP_SHEET_COLUMN";
+    /**
+     * Notification for row added
+     */
+    public static transient final String PROP_SHEET_ROW_ADDED = "PROP_SHEET_ROW_ADDED";
+    /**
+     * Notification for row removed
+     */
+    public static transient final String PROP_SHEET_ROW_REMOVED = "PROP_SHEET_ROW_REMOVED";
+    /**
+     * Notification for row moved
+     */
+    public static transient final String PROP_SHEET_ROW_MOVED = "PROP_SHEET_ROW_MOVED";
+    /**
+     * Notification for column added
+     */
+    public static transient final String PROP_SHEET_COLUMN_ADDED = "PROP_SHEET_COLUMN_ADDED";
+    /**
+     * Notification for column added
+     */
+    public static transient final String PROP_SHEET_COLUMN_REMOVED = "PROP_SHEET_COLUMN_REMOVED";
+    /**
+     * Notification for column added
+     */
+    public static transient final String PROP_SHEET_COLUMN_MOVED = "PROP_SHEET_COLUMN_MOVED";
+    /**
+     * Notification for cell location changed. Not fired on column or row insert
+     * or addition
+     */
     public static transient final String PROP_CELL_LOCATION = "PROP_CELL_LOCATION";
+
     private String sheetName = "";
     private int sheetNumber = 0;
     //row is x and column is y
@@ -55,25 +92,28 @@ public class Sheet implements Serializable {
     }
 
     /**
-     * Adds a {@link Row} to the end of the sheet
+     * Adds a {@link Row} to the end of the sheet. Cell row number will be
+     * changed and column number will be the order in the list. Nulls are
+     * allowed in the list
      *
      * @param row {@link Row} the row to add
      * @return true if row is added
      * @see Row
+     * @see List
      */
     public boolean addRow(Row row) {
-        List<Cell> cells=row.getCells();
-        int rowNum=row.getRowNumber();
-        for(int c=0;c<cells.size();c++){
-            Cell cell=cells.get(c);
-            if(cell!=null){
+        List<Cell> cells = row.getCells();
+        int rowNum = row.getRowNumber();
+        for (int c = 0; c < cells.size(); c++) {
+            Cell cell = cells.get(c);
+            if (cell != null) {
                 cell.setColumnNumber(c);
                 cell.setRowNumber(rowNum);
                 cell.addNotificationListener(propertyChangeListener);
             }
             this.cellMap.put(new Point(rowNum, c), cell);
         }
-        firePropertyChange(PROP_SHEET_ROW, null, row);
+        firePropertyChange(PROP_SHEET_ROW_ADDED, null, row);
         return true;
     }
 
@@ -111,7 +151,7 @@ public class Sheet implements Serializable {
             return false;
         }
         isIgnorePropertyChange = true;
-        Row retRow = new Row();
+        Row retRow = this.createRowInstance();
         List<Cell> removedCells = new ArrayList<>();
         Map<Point, Cell> ret = new HashMap<>();
         Iterator<Point> iterator = this.cellMap.keySet().iterator();
@@ -126,7 +166,7 @@ public class Sheet implements Serializable {
         }
         this.cellMap = ret;
         retRow.setCells(removedCells);
-        firePropertyChange(PROP_SHEET_ROW, retRow, null);
+        firePropertyChange(PROP_SHEET_ROW_ADDED, retRow, null);
         isIgnorePropertyChange = false;
         return true;
     }
@@ -153,23 +193,27 @@ public class Sheet implements Serializable {
      * Removes a {@link Row} from the {@link Sheet} by the {@link Row} index and
      * shifts the {@link Row}s after it up a {@link Row}
      *
+     * @param rowNumber the number of the row to remove
      * @param row the {@link Row} to remove
      * @return true if the {@link Row} can be removed
      * @see Row
      * @see Sheet
      */
     public boolean removeRow(int rowNumber) {
+        //TODO: rewrite to grab rows and change the ones past rowNumber to lower 
+        //number then fire notification
         if (rowNumber < 0) {
-            Exception e = new IndexOutOfBoundsException("Row NumberCan Not "
+            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
                     + "Be Lest Than 0");
             e.printStackTrace(System.out);
-            return false;
+            throw e;
         } else if (rowNumber >= getRowCount()) {
-            Exception e = new IndexOutOfBoundsException("Row NumberCan Not "
+            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
                     + "Be Greater Than The Number Of Rows " + getRowCount());
-            return false;
+            e.printStackTrace(System.out);
+            throw e;
         }
-        Row retRow = new Row();
+        Row retRow = this.createRowInstance();
         List<Cell> removedCells = new ArrayList<>();
         Map<Point, Cell> ret = new HashMap<>();
         Iterator<Point> iterator = this.cellMap.keySet().iterator();
@@ -181,23 +225,32 @@ public class Sheet implements Serializable {
                 ret.put(curPoint, this.cellMap.get(curPoint));
                 continue;
             } else if (curPoint.x == rowNumber) {
-                ret.put(curPoint, this.cellMap.get(ret));
                 continue;
             }
-            Cell cell = ((AbstractCell) this.cellMap.get(curPoint)).makeClone();
+            Cell cell = null;
+            try {
+                if (this.cellMap.get(curPoint) instanceof Cloneable) {
+                    Method m = cell.getClass().getDeclaredMethod("clone");
+                    m.setAccessible(true);
+                    cell = ((Cell) m.invoke(cell));
+                }
+            } catch (Exception e) {
+            }
             removedCells.add(this.cellMap.get(curPoint));
+            Point newPoint = new Point(curPoint.x, curPoint.y - 1);
             ret.put(curPoint, this.cellMap.get(curPoint));
         }
         this.cellMap = ret;
         retRow.setCells(removedCells);
-        firePropertyChange(PROP_SHEET_ROW, retRow, null);
+        firePropertyChange(PROP_SHEET_ROW_ADDED, retRow, null);
         isIgnorePropertyChange = false;
         return true;
     }
 
     /**
-     * Inserts a {@link Row} at the provided row number and shifts the cells at
-     * that number and higher up one
+     * Inserts a {@link Row} at the provided row number. If the insert is before
+     * the end of the current rows then the cells in the current row are shifted
+     * to that number and higher up one row.
      *
      * @param row the row to insert
      * @param rowNumber the row number to insert the {@link Row} at. Zero based
@@ -206,7 +259,21 @@ public class Sheet implements Serializable {
      *
      */
     public boolean insertRow(Row row, int rowNumber) {
-        return false;
+        if (rowNumber < 0) {
+            Exception e = new IndexOutOfBoundsException("Row NumberCan Not "
+                    + "Be Lest Than 0");
+            e.printStackTrace(System.out);
+            return false;
+        } else if (rowNumber == rowCount) {
+            return addRow(row);
+        } else if (rowNumber > rowCount) {
+
+        }
+        List<Row> rows = new ArrayList<>();
+        for (int i = 0; i < rowCount; i++) {
+            rows.add(getRow(i));
+        }
+        return true;
     }
 
     /**
@@ -223,15 +290,15 @@ public class Sheet implements Serializable {
     }
 
     /**
-     * Adds a {@link Column} to this sheet
+     * Adds a {@link Column} to this sheet after the other columns. Cell colum
+     * numbers are set and the row numbers are set by their placement in the
+     * list. Null entries are allowed
      *
      * @param column the {@link Column} to add
+     * @see Column
+     * @see List
      */
     public void addColumn(Column column) {
-
-    }
-
-    public void addColumn(Column column, int columnNumber) {
 
     }
 
@@ -469,7 +536,16 @@ public class Sheet implements Serializable {
      */
     public Row createRowInstance() {
         return createRowInstance(-1);
+    }
 
+    public Column createColumnInstance() {
+        return createColumnInstance(-1);
+    }
+
+    public Column createColumnInstance(int columnNumber) {
+        Column c = Column.getInstance(this);
+        c.setColumnNumber(columnNumber);
+        return c;
     }
 
     /**
@@ -485,8 +561,9 @@ public class Sheet implements Serializable {
      * @see Sheet
      */
     public Row createRowInstance(int rowNumber) throws ArrayIndexOutOfBoundsException {
-        return null;
-
+        Row r = Row.getInstance(this);
+        r.setRowNumber(rowNumber);
+        return r;
     }
 
     private boolean isCellInUse(Point location, Cell cell) {
