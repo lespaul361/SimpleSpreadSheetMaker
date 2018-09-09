@@ -52,16 +52,7 @@ public class Row implements Serializable, Cloneable {
 
     private Row(Sheet sheet) {
         this.sheet = sheet;
-    }
-
-    /**
-     * Creates a new instance of a Row
-     *
-     * @param sheet the sheet this row is attached to
-     * @return
-     */
-    public static Row getInstance(Sheet sheet) {
-        return new Row(sheet);
+        addNotificationListener(sheet.rowPropertyChangeListener);
     }
 
     /**
@@ -83,6 +74,10 @@ public class Row implements Serializable, Cloneable {
         this.rowNumber = rowNumber;
         propertyChangeSupport.firePropertyChange(PROP_ROW_NUMBER, oldRowNumber, rowNumber);
     }
+    
+    protected static Row getInstance(Sheet sheet){
+        return new Row(sheet);
+    }
 
     /**
      * Gets the list of cells in the row. The order of the cells in the list is
@@ -101,9 +96,16 @@ public class Row implements Serializable, Cloneable {
      * @param cells the cells to set
      */
     public void setCells(List<Cell> cells) {
-        java.util.List<com.github.lespaul361.commons.simplespreadsheet.Cell> oldCells = this.cells;
-        this.cells = cells;
-        propertyChangeSupport.firePropertyChange(PROP_CELLS, oldCells, cells);
+        try {
+            List<Cell> oldCells = new ArrayList<>();
+            for (Cell cell : cells) {
+                oldCells.add((Cell) cell.clone());
+            }
+            this.cells = cells;
+            propertyChangeSupport.firePropertyChange(PROP_CELLS, oldCells, cells);
+        } catch (Exception e) {
+        }
+
     }
 
     /**
@@ -139,6 +141,9 @@ public class Row implements Serializable, Cloneable {
      * @see PropertyChangeSupport
      */
     public void addNotificationListener(PropertyChangeListener listener) {
+        if (listener == sheet.rowPropertyChangeListener) {
+            return;
+        }
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 

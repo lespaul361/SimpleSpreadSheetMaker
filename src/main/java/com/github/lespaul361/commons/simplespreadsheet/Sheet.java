@@ -52,6 +52,10 @@ public class Sheet implements Serializable {
      */
     public static transient final String PROP_SHEET_ROW_MOVED = "PROP_SHEET_ROW_MOVED";
     /**
+     * Notification for row cleared
+     */
+    public static transient final String PROP_SHEET_ROW_CLEARED = "PROP_SHEET_ROW_CLEARED";
+    /**
      * Notification for column added
      */
     public static transient final String PROP_SHEET_COLUMN_ADDED = "PROP_SHEET_COLUMN_ADDED";
@@ -74,15 +78,21 @@ public class Sheet implements Serializable {
     //row is x and column is y
     private Map<Point, Cell> cellMap = new HashMap<>();
     private Map<Integer, Style> rowStyleMap = new HashMap<>();
+    private Map<Integer, Style> columnStyleMap = new HashMap<>();
     private Style style = new SheetStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private int rowCount = 0;
     private int columnCount = 0;
     private boolean isIgnorePropertyChange = false;
     EventListenerList eventList = new EventListenerList();
-    PropertyChangeListener propertyChangeListener = (PropertyChangeEvent evt) -> {
+    PropertyChangeListener cellPropertyChangeListener = (PropertyChangeEvent evt) -> {
         if (!isIgnorePropertyChange) {
-            cellPropertyChanged(evt);
+            cellPropertyChanged(evt.getPropertyName(), (Cell) evt.getOldValue(), (Cell) evt.getNewValue());
+        }
+    };
+    PropertyChangeListener rowPropertyChangeListener = (PropertyChangeEvent evt) -> {
+        if (!isIgnorePropertyChange) {
+            rowPropertyChanged(evt.getPropertyName(), (Row) evt.getOldValue(), (Row) evt.getNewValue());
         }
     };
 
@@ -109,10 +119,11 @@ public class Sheet implements Serializable {
             if (cell != null) {
                 cell.setColumnNumber(c);
                 cell.setRowNumber(rowNum);
-                cell.addNotificationListener(propertyChangeListener);
+                cell.addNotificationListener(cellPropertyChangeListener);
             }
             this.cellMap.put(new Point(rowNum, c), cell);
         }
+        rowStyleMap.put(rowNum, row.getStyle());
         firePropertyChange(PROP_SHEET_ROW_ADDED, null, row);
         return true;
     }
@@ -142,13 +153,15 @@ public class Sheet implements Serializable {
      */
     public boolean clearRow(int rowNumber) {
         if (rowNumber < 0 || rowNumber < 0) {
-            Exception e = new ArrayIndexOutOfBoundsException("Row NumberCan Not "
+            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
                     + "Be Lest Than 0");
-            return false;
+            e.printStackTrace(System.err);
+            throw e;
         } else if (rowNumber > getRowCount()) {
-            Exception e = new ArrayIndexOutOfBoundsException("Row NumberCan Not "
+            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
                     + "Be Greater Than The Number Of Rows " + getRowCount());
-            return false;
+            e.printStackTrace(System.err);
+            throw e;
         }
         isIgnorePropertyChange = true;
         Row retRow = this.createRowInstance();
@@ -166,7 +179,7 @@ public class Sheet implements Serializable {
         }
         this.cellMap = ret;
         retRow.setCells(removedCells);
-        firePropertyChange(PROP_SHEET_ROW_ADDED, retRow, null);
+        firePropertyChange(PROP_SHEET_ROW_CLEARED, retRow, null);
         isIgnorePropertyChange = false;
         return true;
     }
@@ -260,19 +273,22 @@ public class Sheet implements Serializable {
      */
     public boolean insertRow(Row row, int rowNumber) {
         if (rowNumber < 0) {
-            Exception e = new IndexOutOfBoundsException("Row NumberCan Not "
-                    + "Be Lest Than 0");
+            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
+                    + "Be Less Than 0");
             e.printStackTrace(System.out);
-            return false;
+            throw e;
         } else if (rowNumber == rowCount) {
             return addRow(row);
-        } else if (rowNumber > rowCount) {
-
         }
+
         List<Row> rows = new ArrayList<>();
         for (int i = 0; i < rowCount; i++) {
             rows.add(getRow(i));
         }
+        
+        
+
+        rowStyleMap.put(rowNumber, row.getStyle());
         return true;
     }
 
@@ -281,12 +297,33 @@ public class Sheet implements Serializable {
      *
      * @param rowNumber the row index
      * @return the Row
-     * @throws ArrayIndexOutOfBoundsException thrown when the index is outside
-     * of the row array range
+     * @see Row
+     *
      */
-    public Row getRow(int rowNumber) throws ArrayIndexOutOfBoundsException {
-        return null;
+    public Row getRow(int rowNumber) {
+        if (rowNumber < 0 || rowNumber >= rowCount) {
+            RuntimeException e = new ArrayIndexOutOfBoundsException(rowNumber + " is out of bounds");
+            e.printStackTrace(System.out);
+            throw e;
+        }
+        Iterator<Point> iterator = this.cellMap.keySet().iterator();
+        List<Cell> cells = new ArrayList<>();
+        Point curPoint = null;
+        while (iterator.hasNext()) {
+            curPoint = iterator.next();
+            if (curPoint.x == rowNumber) {
+                cells.add(this.cellMap.get(curPoint));
+            }
+        }
 
+        cells.sort((Cell c1, Cell c2) -> {
+            return Integer.compare(c1.getColumnNumber(), c2.getColumnNumber());
+        });
+
+        Row row = createRowInstance();
+        row.setCells(cells);
+        row.addNotificationListener(this.rowPropertyChangeListener);
+        return row;
     }
 
     /**
@@ -613,20 +650,23 @@ public class Sheet implements Serializable {
         this.propertyChangeSupport.firePropertyChange(property, oldValue, newValue);
     }
 
-    private void cellPropertyChanged(PropertyChangeEvent ev) {
+    protected void cellPropertyChanged(String property, Cell oldValue, Cell newValue) {
+        this.propertyChangeSupport.firePropertyChange(property, oldValue, newValue);
+    }
 
+    protected void rowPropertyChanged(String property, Row oldValue, Row newValue) {
+        firePropertyChange(property, oldValue, newValue);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
-
         }
         if (getClass() != obj.getClass()) {
             return false;
-
         }
+
         final Sheet other = (Sheet) obj;
 
         return (other.hashCode() == this.hashCode());

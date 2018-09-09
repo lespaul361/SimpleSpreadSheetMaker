@@ -132,5 +132,14 @@ public abstract class AbstractCell implements Cell {
     public void removeNotificationListener(String propertyName, PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(propertyName, listener);
     }
-    
+
+    /**
+     * Used to clone a cell. This will return null and should be an override in
+     * inherited classes
+     *
+     * @return null
+     */
+    public Object clone() {
+        return null;
+    }
 }

@@ -133,4 +133,5 @@ public interface Cell extends Cloneable {
      */
     public void setStyle(Style style);
 
+    public Object clone();
 }
