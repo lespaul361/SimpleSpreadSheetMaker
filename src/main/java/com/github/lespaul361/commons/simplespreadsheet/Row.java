@@ -78,6 +78,12 @@ public class Row implements Serializable, Cloneable {
     protected static Row getInstance(Sheet sheet){
         return new Row(sheet);
     }
+    
+    public Cell getCellInstance(){
+        Cell cell=new BasicCell(sheet);
+        cell.setRowNumber(rowNumber);
+        return cell;
+    }
 
     /**
      * Gets the list of cells in the row. The order of the cells in the list is
