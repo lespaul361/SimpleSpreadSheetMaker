@@ -61,6 +61,12 @@ public class Column implements Serializable {
     protected int getColumnNumber() {
         return columnNumber;
     }
+    
+    public Cell getCellInstance(){
+        Cell cell=new BasicCell(sheet);
+        cell.setColumnNumber(columnNumber);
+        return cell;
+    }
 
     /**
      * Sets the column number

@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import javax.swing.event.EventListenerList;
 
 /**
@@ -178,6 +179,7 @@ public class Sheet implements Serializable {
             ret.put(curPoint, this.cellMap.get(curPoint));
         }
         this.cellMap = ret;
+        checkCounts();
         retRow.setCells(removedCells);
         firePropertyChange(PROP_SHEET_ROW_CLEARED, retRow, null);
         isIgnorePropertyChange = false;
@@ -272,6 +274,9 @@ public class Sheet implements Serializable {
      *
      */
     public boolean insertRow(Row row, int rowNumber) {
+        Map<Point, Cell> tmpHashMap = new HashMap<>();
+        Map<Integer, Style> newRowStyles = new HashMap<>();
+
         if (rowNumber < 0) {
             RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
                     + "Be Less Than 0");
@@ -285,10 +290,45 @@ public class Sheet implements Serializable {
         for (int i = 0; i < rowCount; i++) {
             rows.add(getRow(i));
         }
-        
-        
 
-        rowStyleMap.put(rowNumber, row.getStyle());
+        for (int i = 0; i < rowNumber; i++) {
+            rows.get(i).getCells().forEach((cell) -> {
+                if (cell != null) {
+                    tmpHashMap.put(
+                            new Point(cell.getRowNumber(),
+                                    cell.getColumnNumber()), cell);
+                }
+            });
+            newRowStyles.put(i, rows.get(i).getStyle());
+
+        }
+
+        row.getCells().forEach((cell) -> {
+            tmpHashMap.put(
+                    new Point(cell.getRowNumber(),
+                            cell.getColumnNumber()), cell);
+        });
+        newRowStyles.put(rowNumber, row.getStyle());
+        firePropertyChange(PROP_SHEET_ROW_ADDED, null, row);
+
+        for (int i = rowNumber + 1; i < rows.size(); i++) {
+            rows.get(i).getCells().forEach((cell) -> {
+                if (cell != null) {
+                    final Point oldPoint = new Point(cell.getRowNumber(), cell.getColumnNumber());
+                    tmpHashMap.put(
+                            new Point(cell.getRowNumber(),
+                                    cell.getColumnNumber()), cell);
+                    final Point newPoint = new Point(cell.getRowNumber(), cell.getColumnNumber());
+                    firePropertyChange(PROP_CELL_LOCATION, oldPoint, newPoint);
+                }
+            });
+            newRowStyles.put(i, rows.get(i).getStyle());
+            firePropertyChange(PROP_SHEET_ROW_MOVED, i, i + 1);
+        }
+
+        rowStyleMap = newRowStyles;
+        this.cellMap = tmpHashMap;
+        checkCounts();
         return true;
     }
 
@@ -366,8 +406,7 @@ public class Sheet implements Serializable {
     }
 
     public Column getColumn(int index) throws ArrayIndexOutOfBoundsException {
-        if (index
-                < 0) {
+        if (index < 0) {
             throw new ArrayIndexOutOfBoundsException("Column Number Is Less Than 0");
 
         }
@@ -381,41 +420,71 @@ public class Sheet implements Serializable {
      * @param rowNumber the row number for the cell
      * @param columnNumber the column number for the cell
      * @return the cell at the desired location
-     * @throws ArrayIndexOutOfBoundsException thrown when the indexes are out of
-     * range
+     *
      */
-    public Cell getCell(int rowNumber, int columnNumber) throws ArrayIndexOutOfBoundsException {
-        if (rowNumber
-                < 0) {
-            throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
-
+    public Cell getCell(int rowNumber, int columnNumber) {
+        if (rowNumber < 0) {
+            throw new IndexOutOfBoundsException("Row Number Is Less Than 0");
         }
-        return null;
+        if (columnNumber < 0) {
+            throw new IndexOutOfBoundsException("Column Number Is Less Than 0");
+        }
+        if (rowNumber > this.rowCount) {
+            throw new IndexOutOfBoundsException("Row Number Is Outside Range");
+        }
+        if (columnNumber > this.columnCount) {
+            throw new IndexOutOfBoundsException("Column Number Is Outside Range");
+        }
+
+        Cell cell = cellMap.get(new Point(rowNumber, columnNumber));
+        return cell;
 
     }
 
     /**
-     * Inserts the cell at the specified position. Rows and Columns will expand
-     * if needed
+     * Inserts the cell at the specified position.
      *
      * @param rowNumber the row number
      * @param columnNumber the column number
      * @param cell the cell to place
-     * @throws ArrayIndexOutOfBoundsException thrown with rowNumber or
-     * columnNumber are less than 0
+     * @throws LocationExistsException is thrown if a cell is already in that
+     * position
      */
-    public void setCell(int rowNumber, int columnNumber, Cell cell) throws ArrayIndexOutOfBoundsException {
-        if (rowNumber
-                < 0) {
-            throw new ArrayIndexOutOfBoundsException("Row Number Is Less Than 0");
-
+    public void setCell(int rowNumber, int columnNumber, Cell cell) throws LocationExistsException {
+        try {
+            setCell(rowNumber, columnNumber, cell, false);
+        } catch (LocationExistsException e) {
+            throw e;
         }
-        if (columnNumber
-                < 0) {
-            throw new ArrayIndexOutOfBoundsException("Column Number Is Less Than 0");
+    }
 
+    /**
+     * Inserts the cell at the specified position.
+     *
+     * @param rowNumber the row number
+     * @param columnNumber the column number
+     * @param cell the cell to place
+     * @param isOverWrite if true it will over write the existing cell
+     * @throws LocationExistsException is thrown if a cell is already in that
+     * position and <code>isOverWrite</code> is false
+     */
+    public void setCell(int rowNumber, int columnNumber, Cell cell, boolean isOverWrite) throws LocationExistsException {
+        if (rowNumber < 0) {
+            throw new IndexOutOfBoundsException("Row Number Is Less Than 0");
+        }
+        if (columnNumber < 0) {
+            throw new IndexOutOfBoundsException("Column Number Is Less Than 0");
+        }
+        if (!isOverWrite) {
+            if (isCellInUse(new Point(rowNumber, columnNumber), cell)) {
+                Exception e = new LocationExistsException(new Point(rowNumber, columnNumber));
+                e.printStackTrace(System.err);
+                throw (LocationExistsException) e;
+            }
         }
 
+        this.cellMap.put(new Point(rowNumber, columnNumber), cell);
+        checkCounts();
     }
 
     /**
@@ -452,6 +521,7 @@ public class Sheet implements Serializable {
             throw new LocationExistsException(location);
         }
         Cell cell = new BasicCell(this);
+        cell.addNotificationListener(cellPropertyChangeListener);
         return cell;
     }
 
@@ -488,9 +558,7 @@ public class Sheet implements Serializable {
      * @see PropertyChangeSupport
      */
     public void addNotificationListener(PropertyChangeListener listener) {
-        propertyChangeSupport
-                .addPropertyChangeListener(listener
-                );
+        propertyChangeSupport.addPropertyChangeListener(listener);
 
     }
 
@@ -508,10 +576,7 @@ public class Sheet implements Serializable {
      * @see PropertyChangeSupport
      */
     public void addNotificationListener(String propertyName, PropertyChangeListener listener) {
-        propertyChangeSupport
-                .addPropertyChangeListener(propertyName,
-                        listener
-                );
+        propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
 
     }
 
@@ -527,18 +592,9 @@ public class Sheet implements Serializable {
      * @param sheetName the sheetName to set
      */
     public void setSheetName(String sheetName) {
-        java.lang.String oldSheetName
-                = this.sheetName;
-
-        this.sheetName
-                = sheetName;
-
-        propertyChangeSupport
-                .firePropertyChange(PROP_SHEET_NAME,
-                        oldSheetName,
-                        sheetName
-                );
-
+        java.lang.String oldSheetName = this.sheetName;
+        this.sheetName = sheetName;
+        propertyChangeSupport.firePropertyChange(PROP_SHEET_NAME, oldSheetName, sheetName);
     }
 
     /**
@@ -557,7 +613,16 @@ public class Sheet implements Serializable {
      */
     public int getRowCount() {
         return rowCount;
-
+    }
+    
+    /**
+     * Gets the number of columns in this sheet
+     *
+     * @return <code>int</code> with the number of rows
+     * @see Column
+     */
+    public int getColumnCount() {
+        return columnCount;
     }
 
     /**
@@ -604,38 +669,30 @@ public class Sheet implements Serializable {
     }
 
     private boolean isCellInUse(Point location, Cell cell) {
-        return (cell
-                .getRowNumber() == location
-                        .getX() && cell
-                        .getColumnNumber() == location
-                        .getY());
-
-    }
-
-    private int rowInUse(int index) {
-        return -1;
+        return (cell.getRowNumber() == location.getX()
+                && cell.getColumnNumber() == location.getY());
 
     }
 
     private void checkCounts() {
-
+        int row = 0, col = 0;
+        Set<Point> points = this.cellMap.keySet();
+        for (Point point : points) {
+            row = row > point.x ? row : point.x;
+            col = col > point.y ? col : point.y;
+        }
+        this.columnCount = col + 1;
+        this.rowCount = row + 1;
     }
 
     /**
      * @param sheetNumber the sheetNumber to set
      */
     protected void setSheetNumber(int sheetNumber) {
-        int oldSheetNumber
-                = this.sheetNumber;
+        int oldSheetNumber = this.sheetNumber;
+        this.sheetNumber = sheetNumber;
 
-        this.sheetNumber
-                = sheetNumber;
-
-        propertyChangeSupport
-                .firePropertyChange(PROP_SHEET_NUMBER,
-                        oldSheetNumber,
-                        sheetNumber
-                );
+        propertyChangeSupport.firePropertyChange(PROP_SHEET_NUMBER, oldSheetNumber, sheetNumber);
 
     }
 

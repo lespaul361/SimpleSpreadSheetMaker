@@ -170,6 +170,7 @@ public class Row implements Serializable, Cloneable {
         propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
     }
 
+
     @Override
     public int hashCode() {
         int hash = 5;
