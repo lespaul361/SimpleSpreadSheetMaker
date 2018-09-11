@@ -7,9 +7,9 @@
 package com.github.lespaul361.commons.simplespreadsheet;
 
 /**
- *
+ * 
  * @author David Hamilton
  */
-public class RowStyle extends AbstractStyle{
+public class RowStyle extends AbstractStyle {
 
 }

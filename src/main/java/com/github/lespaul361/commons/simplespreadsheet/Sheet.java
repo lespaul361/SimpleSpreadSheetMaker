@@ -88,7 +88,7 @@ public class Sheet implements Serializable {
     EventListenerList eventList = new EventListenerList();
     PropertyChangeListener cellPropertyChangeListener = (PropertyChangeEvent evt) -> {
         if (!isIgnorePropertyChange) {
-            cellPropertyChanged(evt.getPropertyName(), (Cell) evt.getOldValue(), (Cell) evt.getNewValue());
+            cellPropertyChanged(evt.getPropertyName(), evt.getOldValue(), evt.getNewValue());
         }
     };
     PropertyChangeListener rowPropertyChangeListener = (PropertyChangeEvent evt) -> {
@@ -187,11 +187,11 @@ public class Sheet implements Serializable {
     }
 
     /**
-     * Removes a {@link Row} object from the {@link Sheet} and shifts the
-     * {@link Row}s after it up a {@link Row}
+     * Removes a row object from the sheet and shifts the {@link Row}s after it
+     * up a {@link Row}
      *
      * @param row the {@link Row} to remove
-     * @return true if the {@link Row} can be removed
+     * @return true if the row can be removed
      * @see Row
      * @see Sheet
      */
@@ -209,8 +209,7 @@ public class Sheet implements Serializable {
      * shifts the {@link Row}s after it up a {@link Row}
      *
      * @param rowNumber the number of the row to remove
-     * @param row the {@link Row} to remove
-     * @return true if the {@link Row} can be removed
+     * @return true if the row can be removed
      * @see Row
      * @see Sheet
      */
@@ -614,7 +613,7 @@ public class Sheet implements Serializable {
     public int getRowCount() {
         return rowCount;
     }
-    
+
     /**
      * Gets the number of columns in this sheet
      *
@@ -626,10 +625,9 @@ public class Sheet implements Serializable {
     }
 
     /**
-     * Creates a new {@link Row} in the sheet with the row number being -1. The
-     * row is not added to the sheet until
-     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row)} or
-     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row, int)}
+     * Creates a new row in the sheet with the row number being -1. The row is
+     * not added to the sheet until
+     * {@link com.github.lespaul361.commons.simplespreadsheet.Sheet#addRow(com.github.lespaul361.commons.simplespreadsheet.Row)}
      * is used.
      *
      * @return a Row
@@ -640,10 +638,23 @@ public class Sheet implements Serializable {
         return createRowInstance(-1);
     }
 
+    /**
+     * Creates a new column instance set at -1
+     *
+     * @return a new column
+     * @see Column
+     */
     public Column createColumnInstance() {
         return createColumnInstance(-1);
     }
 
+    /**
+     * Creates a new column instance set at the provided column number
+     *
+     * @param columnNumber the number of the column
+     * @return a new column
+     * @see Column
+     */
     public Column createColumnInstance(int columnNumber) {
         Column c = Column.getInstance(this);
         c.setColumnNumber(columnNumber);
@@ -653,11 +664,10 @@ public class Sheet implements Serializable {
     /**
      * Creates a new {@link Row} in the sheet with the supplied row number. The
      * row is not added to the sheet until
-     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row)} or
-     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row, int)}
-     * is used.
+     * {@link #addRow(com.github.lespaul361.commons.simplespreadsheet.Row)} is
+     * used.
      *
-     * @param rowNumber
+     * @param rowNumber the index of the row
      * @return a Row
      * @see Row
      * @see Sheet
@@ -707,7 +717,7 @@ public class Sheet implements Serializable {
         this.propertyChangeSupport.firePropertyChange(property, oldValue, newValue);
     }
 
-    protected void cellPropertyChanged(String property, Cell oldValue, Cell newValue) {
+    protected void cellPropertyChanged(String property, Object oldValue, Object newValue) {
         this.propertyChangeSupport.firePropertyChange(property, oldValue, newValue);
     }
 

@@ -9,17 +9,18 @@ package com.github.lespaul361.commons.simplespreadsheet;
 import java.awt.Font;
 
 /**
- *
+ * 
  * @author David Hamilton
  */
 public interface Style {
- /**
+    /**
      * @return the bold
      */
     public boolean isBold();
 
     /**
-     * @param bold the bold to set
+     * @param bold
+     *            the bold to set
      */
     public void setBold(boolean bold);
 
@@ -29,27 +30,30 @@ public interface Style {
     public boolean isItalic();
 
     /**
-     * @param italic the italic to set
+     * @param italic
+     *            the italic to set
      */
     public void setItalic(boolean italic);
 
     /**
      * @return the underline
      */
-    public boolean isUnderline() ;
+    public boolean isUnderline();
 
     /**
-     * @param underline the underline to set
+     * @param underline
+     *            the underline to set
      */
     public void setUnderline(boolean underline);
 
     /**
      * @return the font
      */
-    public Font getFont() ;
+    public Font getFont();
 
     /**
-     * @param font the font to set
+     * @param font
+     *            the font to set
      */
     public void setFont(Font font);
 }

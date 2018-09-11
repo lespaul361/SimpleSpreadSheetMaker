@@ -114,6 +114,42 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>com.github.lespaul361</groupId>
+                <artifactId>JavadocPlugIn-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <configurationFile>${project.basedir}\src\main\resources\JavaFillInConfig.xml</configurationFile>               
+                    <fillers>
+                        <filler>
+                            <variable>$test</variable>
+                            <text>this is a test</text>
+                        </filler>
+                    </fillers>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javadocfiller</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin><!-- mvn java-formatter:format -->
+                <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+                <artifactId>maven-java-formatter-plugin</artifactId>
+                <version>0.4</version>
+                <configuration>
+                    <configFile>${project.basedir}\src\main\resources\exclipseFormatter.xml</configFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
@@ -166,6 +202,7 @@
                             <overWriteIfNewer>true</overWriteIfNewer>
                             <useBaseVersion>true</useBaseVersion>
                             <exclude>org.junit.platform</exclude>
+                            <exclude></exclude>
                         </configuration>
                     </execution>
                 </executions>
@@ -174,6 +211,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.0.2</version>
+                <configuration>
+                    <excludes>
+                        <exclude>${project.basedir}\src\main\resources\exclipseFormatter.xml</exclude>
+                        <exclude>${project.basedir}\src\main\resources\JavaFillInConfig.xml</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

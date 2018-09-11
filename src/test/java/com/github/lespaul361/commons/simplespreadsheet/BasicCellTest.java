@@ -55,7 +55,7 @@ public class BasicCellTest {
      */
     @org.junit.Test
     public void testEquals() {
-        System.out.println("equals");
+        System.out.println("not equals");
         Object obj = null;
         BasicCell instance = (BasicCell) sheet.getCellInstance();
         boolean expResult = true;
@@ -63,15 +63,5 @@ public class BasicCellTest {
         assertEquals(expResult, result);
 
     }
-    @org.junit.Test
-    public void testNotEquals() {
-        System.out.println("equals");
-        Object obj = null;
-        BasicCell instance = (BasicCell) sheet.getCellInstance();
-        instance.setRowNumber(2);
-        boolean expResult = false;
-        boolean result = instance.equals((BasicCell) sheet.getCellInstance());
-        assertEquals(expResult, result);
-
-    }
+   
 }

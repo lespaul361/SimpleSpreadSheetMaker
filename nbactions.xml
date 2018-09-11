@@ -15,4 +15,18 @@
                 <goal>install</goal>
             </goals>
         </action>
+        <action>
+            <actionName>CUSTOM-format</actionName>
+            <displayName>format</displayName>
+            <goals>
+                <goal>com.googlecode.maven-java-formatter-plugin:maven-java-formatter-plugin</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-javadoc:javadoc</actionName>
+            <displayName>javadoc:javadoc</displayName>
+            <goals>
+                <goal>javadoc:javadoc</goal>
+            </goals>
+        </action>
     </actions>
