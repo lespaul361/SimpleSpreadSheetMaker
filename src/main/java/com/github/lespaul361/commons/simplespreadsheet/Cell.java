@@ -5,7 +5,7 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
-import java.beans. PropertyChangeListener;
+import java.beans.PropertyChangeListener;
 
 /**
  * 
