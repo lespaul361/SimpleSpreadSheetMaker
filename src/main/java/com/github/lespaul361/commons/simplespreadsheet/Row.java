@@ -74,13 +74,13 @@ public class Row implements Serializable, Cloneable {
         this.rowNumber = rowNumber;
         propertyChangeSupport.firePropertyChange(PROP_ROW_NUMBER, oldRowNumber, rowNumber);
     }
-    
-    protected static Row getInstance(Sheet sheet){
+
+    protected static Row getInstance(Sheet sheet) {
         return new Row(sheet);
     }
-    
-    public Cell getCellInstance(){
-        Cell cell=new BasicCell(sheet);
+
+    public Cell getCellInstance() {
+        Cell cell = new BasicCell(sheet);
         cell.setRowNumber(rowNumber);
         return cell;
     }
@@ -169,7 +169,6 @@ public class Row implements Serializable, Cloneable {
     public void addNotificationListener(String propertyName, PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
     }
-
 
     @Override
     public int hashCode() {

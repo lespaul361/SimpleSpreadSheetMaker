@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.github.lespaul361.commons.simplespreadsheet;
 
 import java.awt.Font;
@@ -12,7 +11,7 @@ import java.awt.Font;
  *
  * @author David Hamilton
  */
-public class ColumnStyle implements Style{
+public class ColumnStyle implements Style {
 
     @Override
     public boolean isBold() {

@@ -664,7 +664,7 @@ public class Sheet implements Serializable {
      * @param rowNumber the row number
      * @param columnNumber the column number
      * @param cell the cell to place
-     * @throws LocationExistsException is thrown if a cell is already in that
+     * @throws LocationExistsException is thrown if a cell is already in that *
      * position
      */
     public void setCell(int rowNumber, int columnNumber, Cell cell) throws LocationExistsException {
@@ -682,7 +682,7 @@ public class Sheet implements Serializable {
      * @param columnNumber the column number
      * @param cell the cell to place
      * @param isOverWrite if true it will over write the existing cell
-     * @throws LocationExistsException is thrown if a cell is already in that
+     * @throws LocationExistsException is thrown if a cell is already in that *
      * position and <code>isOverWrite</code> is false
      */
     public void setCell(int rowNumber, int columnNumber, Cell cell, boolean isOverWrite) throws LocationExistsException {

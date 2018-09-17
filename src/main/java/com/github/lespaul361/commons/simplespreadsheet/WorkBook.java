@@ -85,8 +85,9 @@ public class WorkBook implements FileFormats, Serializable {
      *
      * @param index the index of the Sheet object
      * @return the Sheet object
-     * @throws ArrayIndexOutOfBoundsException thrown when the index in not in
-     * the array range
+     * @throws ArrayIndexOutOfBoundsException Thrown to indicate that an array
+     * has been accessed with an illegal index. The index is either negative or
+     * greater than or equal to the size of the array.
      */
     public Sheet getSheet(int index) throws ArrayIndexOutOfBoundsException {
         if (index < 0) {
@@ -104,7 +105,9 @@ public class WorkBook implements FileFormats, Serializable {
      *
      * @param index the index of the sheet
      * @return the sheet being removed
-     * @throws ArrayIndexOutOfBoundsException
+     * @throws ArrayIndexOutOfBoundsException Thrown to indicate that an array
+     * has been accessed with an illegal index. The index is either negative or
+     * greater than or equal to the size of the array.
      * @see Sheet
      */
     public Sheet removeSheet(int index) throws ArrayIndexOutOfBoundsException {
@@ -124,8 +127,10 @@ public class WorkBook implements FileFormats, Serializable {
      *
      * @param sheetName the name of the sheet
      * @return true if the sheet was found and removed, otherwise false
-     * @throws ArrayIndexOutOfBoundsException
-     * @throws IllegalArgumentException
+     * @throwsArrayIndexOutOfBoundsException Thrown to indicate that an array *
+     * has been accessed with an illegal index. The index is either negative or
+     * * greater than or equal to the size of the array. * @throws
+     * IllegalArgumentException
      * @see Sheet
      */
     public boolean removeSheet(String sheetName) {

@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  * An <code>Exception</code> class for when an add will interupt existing data.
- * 
+ *
  * @author David Hamilton
  */
 public class LocationExistsException extends RuntimeException implements Serializable {
@@ -21,23 +21,22 @@ public class LocationExistsException extends RuntimeException implements Seriali
 
     /**
      * Creates a new <code>LocationExistsException</code>
-     * 
-     * @param point
-     *            the location of the first instance the new data interrupts
+     *
+     * @param point the location of the first instance the new data interrupts
      */
     public LocationExistsException(Point point) {
-	super(MESSAGE);
-	this.point = point;
+        super(MESSAGE);
+        this.point = point;
     }
 
     /**
      * The cell coordinates that are being used
-     * 
+     *
      * @return the Point
      * @see Point
      */
     public Point getPoint() {
-	return this.point;
+        return this.point;
     }
 
 }

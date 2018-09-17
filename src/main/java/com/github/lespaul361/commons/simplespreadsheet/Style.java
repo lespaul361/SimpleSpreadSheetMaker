@@ -3,24 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.github.lespaul361.commons.simplespreadsheet;
 
 import java.awt.Font;
 
 /**
- * 
+ *
  * @author David Hamilton
  */
 public interface Style {
+
     /**
      * @return the bold
      */
     public boolean isBold();
 
     /**
-     * @param bold
-     *            the bold to set
+     * @param bold the bold to set
      */
     public void setBold(boolean bold);
 
@@ -30,8 +29,7 @@ public interface Style {
     public boolean isItalic();
 
     /**
-     * @param italic
-     *            the italic to set
+     * @param italic the italic to set
      */
     public void setItalic(boolean italic);
 
@@ -41,8 +39,7 @@ public interface Style {
     public boolean isUnderline();
 
     /**
-     * @param underline
-     *            the underline to set
+     * @param underline the underline to set
      */
     public void setUnderline(boolean underline);
 
@@ -52,8 +49,7 @@ public interface Style {
     public Font getFont();
 
     /**
-     * @param font
-     *            the font to set
+     * @param font the font to set
      */
     public void setFont(Font font);
 }

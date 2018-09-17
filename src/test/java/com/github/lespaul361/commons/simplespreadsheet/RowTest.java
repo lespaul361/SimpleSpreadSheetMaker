@@ -124,7 +124,7 @@ public class RowTest {
     @Test
     public void testHashCode() {
         System.out.println("hashCode");
-        assertTrue(row.hashCode()>0);
+        assertTrue(row.hashCode() > 0);
     }
 
     /**

@@ -17,24 +17,25 @@ import org.junit.BeforeClass;
  * @author David Hamilton
  */
 public class BasicCellTest {
-    WorkBook workBook=WorkBook.getInstance(FileFormats.AllowedFileTypes.XLS);
-    Sheet sheet =workBook.getInstanceSheet("test");
-    
+
+    WorkBook workBook = WorkBook.getInstance(FileFormats.AllowedFileTypes.XLS);
+    Sheet sheet = workBook.getInstanceSheet("test");
+
     public BasicCellTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -45,7 +46,7 @@ public class BasicCellTest {
     @org.junit.Test
     public void testHashCode() {
         System.out.println("hashCode");
-        BasicCell instance =(BasicCell) sheet.getCellInstance();
+        BasicCell instance = (BasicCell) sheet.getCellInstance();
         int result = instance.hashCode();
         Assert.assertNotEquals(result, 0);
     }
@@ -63,5 +64,5 @@ public class BasicCellTest {
         assertEquals(expResult, result);
 
     }
-   
+
 }

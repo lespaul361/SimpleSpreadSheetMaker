@@ -16,7 +16,7 @@ import javax.swing.JLabel;
  *
  * @author David Hamilton
  */
-public abstract class AbstractStyle implements Serializable,Style {
+public abstract class AbstractStyle implements Serializable, Style {
 
     public static final String PROP_BOLD = "PROP_BOLD";
     public static final String PROP_ITALIC = "PROP_ITALIC";
