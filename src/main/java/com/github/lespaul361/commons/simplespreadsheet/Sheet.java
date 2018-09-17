@@ -11,7 +11,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -143,9 +142,9 @@ public class Sheet implements Serializable {
      */
     public boolean clearRow(Row row) {
         if (row == null) {
-            Exception e = new NullPointerException("row is null");
+            RuntimeException e = new NullPointerException("row is null");
             e.printStackTrace(System.out);
-            return false;
+            throw e;
         }
         return (clearRow(row.getRowNumber()) != null);
     }
@@ -158,17 +157,7 @@ public class Sheet implements Serializable {
      * @see Row
      */
     public Row clearRow(int rowNumber) {
-        if (rowNumber < 0 || rowNumber < 0) {
-            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
-                    + "Be Lest Than 0");
-            e.printStackTrace(System.err);
-            throw e;
-        } else if (rowNumber > getRowCount()) {
-            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
-                    + "Be Greater Than The Number Of Rows " + getRowCount());
-            e.printStackTrace(System.err);
-            throw e;
-        }
+        checkRowRange(rowNumber);
         isIgnorePropertyChange = true;
         Row retRow = this.createRowInstance();
         List<Cell> removedCells = new ArrayList<>();
@@ -208,7 +197,7 @@ public class Sheet implements Serializable {
             e.printStackTrace(System.out);
             return false;
         }
-        return removeRow(row.getCells().get(0).getRowNumber());
+        return removeRow(row.getRowNumber()) != null;
     }
 
     /**
@@ -220,53 +209,48 @@ public class Sheet implements Serializable {
      * @see Row
      * @see Sheet
      */
-    public boolean removeRow(int rowNumber) {
-        //TODO: rewrite to grab rows and change the ones past rowNumber to lower
-        //number then fire notification
-        if (rowNumber < 0) {
-            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
-                    + "Be Lest Than 0");
-            e.printStackTrace(System.out);
-            throw e;
-        } else if (rowNumber >= getRowCount()) {
-            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
-                    + "Be Greater Than The Number Of Rows " + getRowCount());
-            e.printStackTrace(System.out);
-            throw e;
+    public Row removeRow(int rowNumber) {
+        checkRowRange(rowNumber);
+
+        List<Row> rows = new ArrayList<>(getRowCount());
+        final Map<Integer, Style> newRowStyleMap = new HashMap<>(getRowCount());
+        final Map<Point, Cell> newCellMap = new HashMap<>(cellMap.size());
+        Row ret = createRowInstance();
+
+        for (int i = 0; i < getRowCount(); i++) {
+            rows.add(getRow(i));
         }
-        Row retRow = this.createRowInstance();
-        List<Cell> removedCells = new ArrayList<>();
-        Map<Point, Cell> ret = new HashMap<>();
-        Iterator<Point> iterator = this.cellMap.keySet().iterator();
-        Point curPoint = null;
-        isIgnorePropertyChange = true;
-        while (iterator.hasNext()) {
-            curPoint = iterator.next();
-            if (curPoint.x < rowNumber) {
-                ret.put(curPoint, this.cellMap.get(curPoint));
-                continue;
-            } else if (curPoint.x == rowNumber) {
-                continue;
-            }
-            Cell cell = null;
-            try {
-                if (this.cellMap.get(curPoint) instanceof Cloneable) {
-                    Method m = cell.getClass().getDeclaredMethod("clone");
-                    m.setAccessible(true);
-                    cell = ((Cell) m.invoke(cell));
+
+        for (int i = 0; i < rowNumber; i++) {
+            rows.get(i).getCells().forEach(cell -> {
+                if (cell != null) {
+                    newCellMap.put(new Point(cell.getRowNumber(),
+                            cell.getColumnNumber()), cell);
                 }
-            } catch (Exception e) {
-            }
-            removedCells.add(this.cellMap.get(curPoint));
-            Point newPoint = new Point(curPoint.x, curPoint.y - 1);
-            ret.put(curPoint, this.cellMap.get(curPoint));
+            });
+            newRowStyleMap.put(i, rows.get(i).getStyle());
         }
-        this.cellMap = ret;
-        retRow.setCells(removedCells);
-        firePropertyChange(PROP_SHEET_ROW_ADDED, retRow, null);
-        isIgnorePropertyChange = false;
+
+        ret = rows.get(rowNumber);
+
+        for (int i = rowNumber; i < getRowCount(); i++) {
+            rows.get(i).getCells().forEach(cell -> {
+                if (cell != null) {
+                    newCellMap.put(new Point(cell.getRowNumber() - 1,
+                            cell.getColumnNumber()), cell);
+                    firePropertyChange(PROP_CELL_LOCATION, new Point(cell.getRowNumber(),
+                            cell.getColumnNumber()), new Point(cell.getRowNumber() - 1,
+                            cell.getColumnNumber()));
+                }
+            });
+            newRowStyleMap.put(i - 1, rows.get(i).getStyle());
+            firePropertyChange(PROP_SHEET_ROW_MOVED, i, i - 1);
+        }
+        cellMap = newCellMap;
+        rowStyleMap = newRowStyleMap;
         checkCounts();
-        return true;
+        firePropertyChange(PROP_SHEET_ROW_MOVED, ret, null);
+        return ret;
     }
 
     /**
@@ -314,6 +298,10 @@ public class Sheet implements Serializable {
             tmpHashMap.put(
                     new Point(cell.getRowNumber(),
                             cell.getColumnNumber()), cell);
+            firePropertyChange(PROP_CELL_LOCATION, new Point(cell.getRowNumber(),
+                    cell.getColumnNumber()), new Point(cell.getRowNumber() - 1,
+                    cell.getColumnNumber()));
+
         });
         newRowStyles.put(rowNumber, row.getStyle());
         firePropertyChange(PROP_SHEET_ROW_ADDED, null, row);
@@ -322,10 +310,8 @@ public class Sheet implements Serializable {
             rows.get(i).getCells().forEach((cell) -> {
                 if (cell != null) {
                     final Point oldPoint = new Point(cell.getRowNumber(), cell.getColumnNumber());
-                    tmpHashMap.put(
-                            new Point(cell.getRowNumber(),
-                                    cell.getColumnNumber()), cell);
-                    final Point newPoint = new Point(cell.getRowNumber(), cell.getColumnNumber());
+                    final Point newPoint = new Point(cell.getRowNumber() + 1, cell.getColumnNumber());
+                    tmpHashMap.put(newPoint, cell);
                     firePropertyChange(PROP_CELL_LOCATION, oldPoint, newPoint);
                 }
             });
@@ -449,17 +435,7 @@ public class Sheet implements Serializable {
      * @see Column
      */
     public Column removeColumn(int columnNumber) {
-        if (columnNumber < 0) {
-            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
-                    + "Be Lest Than 0");
-            e.printStackTrace(System.out);
-            throw e;
-        } else if (columnNumber >= getRowCount()) {
-            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
-                    + "Be Greater Than The Number Of Rows " + getRowCount());
-            e.printStackTrace(System.out);
-            throw e;
-        }
+        checkColumnRange(columnNumber);
         Column ret = createColumnInstance(columnNumber);
         List<Cell> cells = new ArrayList<>();
         Iterator<Point> iterator = cellMap.keySet().iterator();
@@ -483,9 +459,10 @@ public class Sheet implements Serializable {
         for (int i = columnNumber + 1; i < getColumnCount(); i++) {
             cols.get(i).getCells().forEach(cell -> {
                 if (cell != null) {
-                    newCellMap.put(
-                            new Point(cell.getRowNumber(), cell.getColumnNumber() - 1),
-                            cell);
+                    final Point oldPoint = new Point(cell.getRowNumber(), cell.getColumnNumber());
+                    final Point newPoint = new Point(cell.getRowNumber(), cell.getColumnNumber() - 1);
+                    newCellMap.put(newPoint, cell);
+                    firePropertyChange(PROP_CELL_LOCATION, oldPoint, newPoint);
                 }
             });
             styleMap.put(i - 1, cols.get(i).getStyle());
@@ -515,17 +492,6 @@ public class Sheet implements Serializable {
      * @see Column
      */
     public Column clearColumn(int columnNumber) {
-        if (columnNumber < 0) {
-            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
-                    + "Be Lest Than 0");
-            e.printStackTrace(System.out);
-            throw e;
-        } else if (columnNumber >= getRowCount()) {
-            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
-                    + "Be Greater Than The Number Of Rows " + getRowCount());
-            e.printStackTrace(System.out);
-            throw e;
-        }
 
         Column oldCol = getColumn(rowCount);
         Column newCol = null;
@@ -543,6 +509,80 @@ public class Sheet implements Serializable {
         firePropertyChange(PROP_SHEET_COLUMN_CLEARED, oldCol, newCol);
         checkCounts();
         return oldCol;
+    }
+
+    /**
+     * Inserts a column at the specified location and pushes the following
+     * columns up one column
+     *
+     * @param column the column to be added
+     * @param columnNumber the location of the column to be places
+     * @return true if the operation is successful
+     */
+    public boolean insertColumn(Column column, int columnNumber) {
+        if (columnNumber < 0) {
+            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
+                    + "Be Lest Than 0");
+            e.printStackTrace(System.out);
+            throw e;
+        }
+
+        if (columnNumber > getColumnCount()) {
+            for (int i = 0; i < column.getCells().size(); i++) {
+                Cell curCell = column.getCells().get(i);
+                if (curCell != null) {
+                    final Point newPoint = new Point(i, columnNumber);
+                    cellMap.put(newPoint, curCell);
+                    firePropertyChange(PROP_CELL_LOCATION, null, newPoint);
+                }
+            }
+            columnStyleMap.put(columnNumber, column.getStyle());
+            firePropertyChange(PROP_SHEET_COLUMN_ADDED, null, column);
+            checkCounts();
+            return true;
+        }
+        List<Column> columns = new ArrayList<>();
+        Map<Point, Cell> newCellMap = new HashMap<>(cellMap.size());
+        Map<Integer, Style> newColumnStyleMap = new HashMap<Integer, Style>(getColumnCount());
+
+        for (int i = 0; i < columnNumber; i++) {
+            columns.add(getColumn(i));
+        }
+
+        for (int i = 0; i < columnNumber; i++) {
+            columns.get(i).getCells().forEach(cell -> {
+                if (cell != null) {
+                    final Point newPoint = new Point(cell.getRowNumber(), cell.getColumnNumber());
+                    newCellMap.put(newPoint, cell);
+                }
+            });
+            newColumnStyleMap.put(i, columns.get(i).getStyle());
+        }
+
+        for (int i = 0; i < column.getCells().size(); i++) {
+            if (column.getCells().get(i) != null) {
+                final Point newPoint = new Point(i, columnNumber);
+                newCellMap.put(newPoint, column.getCells().get(i));
+            }
+        }
+        newColumnStyleMap.put(columnNumber, column.getStyle());
+
+        for (int i = 0; i < columnNumber; i++) {
+            columns.get(i).getCells().forEach(cell -> {
+                if (cell != null) {
+                    final Point newPoint = new Point(cell.getRowNumber(), cell.getColumnNumber() + 1);
+                    final Point oldPoint = new Point(cell.getRowNumber(), cell.getColumnNumber());
+                    newCellMap.put(newPoint, cell);
+                    firePropertyChange(PROP_CELL_LOCATION, oldPoint, newPoint);
+                }
+            });
+            newColumnStyleMap.put(i + 1, columns.get(i).getStyle());
+            firePropertyChange(PROP_SHEET_COLUMN_MOVED, i, i + 1);
+        }
+        cellMap = newCellMap;
+        columnStyleMap = newColumnStyleMap;
+        checkCounts();
+        return true;
     }
 
     /**
@@ -869,6 +909,34 @@ public class Sheet implements Serializable {
 
     protected void rowPropertyChanged(String property, Row oldValue, Row newValue) {
         firePropertyChange(property, oldValue, newValue);
+    }
+
+    private void checkColumnRange(int columnNumber) {
+        if (columnNumber < 0) {
+            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
+                    + "Be Lest Than 0");
+            e.printStackTrace(System.out);
+            throw e;
+        } else if (columnNumber > getColumnCount()) {
+            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
+                    + "Be Greater Than The Number Of Columns " + getRowCount());
+            e.printStackTrace(System.out);
+            throw e;
+        }
+    }
+
+    private void checkRowRange(int rowNumber) {
+        if (rowNumber < 0) {
+            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
+                    + "Be Lest Than 0");
+            e.printStackTrace(System.out);
+            throw e;
+        } else if (rowNumber >= getRowCount()) {
+            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
+                    + "Be Greater Than The Number Of Row " + getRowCount());
+            e.printStackTrace(System.out);
+            throw e;
+        }
     }
 
     @Override
