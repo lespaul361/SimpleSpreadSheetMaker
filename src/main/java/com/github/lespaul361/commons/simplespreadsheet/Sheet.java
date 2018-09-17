@@ -586,6 +586,38 @@ public class Sheet implements Serializable {
     }
 
     /**
+     * Replaces the column at the specified column number with the cells in the
+     * column provided
+     *
+     * @param column the column to be added
+     * @param columnNumber the location of the column to be replaced
+     * @return true if the operation is successful
+     */
+    public boolean setColumn(Column column, int columnNumber) {
+        if (columnNumber == getColumnCount()) {
+            return addColumn(column);
+        } else if (columnNumber > getColumnCount()) {
+            return insertColumn(column, columnNumber);
+        }
+
+        checkColumnRange(columnNumber);
+        if (clearColumn(columnNumber) != null) {
+            return false;
+        }
+
+        for (int i = 0; i < column.getCells().size(); i++) {
+            Cell cell = column.getCells().get(i);
+            if (cell != null) {
+                final Point point = new Point(i, columnNumber);
+                cellMap.put(point, cell);
+            }
+        }
+        firePropertyChange(PROP_SHEET_COLUMN_ADDED, null, column);
+        checkColumnRange(columnNumber);
+        return true;
+    }
+
+    /**
      * Gets the column at the index position
      *
      * @param index the location of the column
