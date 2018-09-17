@@ -69,6 +69,10 @@ public class Sheet implements Serializable {
      */
     public static transient final String PROP_SHEET_COLUMN_MOVED = "PROP_SHEET_COLUMN_MOVED";
     /**
+     * Notification for column cleared
+     */
+    public static transient final String PROP_SHEET_COLUMN_CLEARED = "PROP_SHEET_COLUMN_CLEARED";
+    /**
      * Notification for cell location changed. Not fired on column or row insert
      * or addition
      */
@@ -126,6 +130,7 @@ public class Sheet implements Serializable {
         }
         rowStyleMap.put(rowNum, row.getStyle());
         firePropertyChange(PROP_SHEET_ROW_ADDED, null, row);
+        checkCounts();
         return true;
     }
 
@@ -142,17 +147,17 @@ public class Sheet implements Serializable {
             e.printStackTrace(System.out);
             return false;
         }
-        return clearRow(row.getRowNumber());
+        return (clearRow(row.getRowNumber()) != null);
     }
 
     /**
      * Clears a row at an index
      *
      * @param rowNumber the index of the row
-     * @return boolean saying if it is successful
+     * @return Row the row that was cleared
      * @see Row
      */
-    public boolean clearRow(int rowNumber) {
+    public Row clearRow(int rowNumber) {
         if (rowNumber < 0 || rowNumber < 0) {
             RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
                     + "Be Lest Than 0");
@@ -181,9 +186,11 @@ public class Sheet implements Serializable {
         this.cellMap = ret;
         checkCounts();
         retRow.setCells(removedCells);
+        retRow.setStyle(rowStyleMap.get(rowNumber));
+        rowStyleMap.remove(rowNumber);
         firePropertyChange(PROP_SHEET_ROW_CLEARED, retRow, null);
         isIgnorePropertyChange = false;
-        return true;
+        return retRow;
     }
 
     /**
@@ -214,15 +221,15 @@ public class Sheet implements Serializable {
      * @see Sheet
      */
     public boolean removeRow(int rowNumber) {
-        //TODO: rewrite to grab rows and change the ones past rowNumber to lower 
+        //TODO: rewrite to grab rows and change the ones past rowNumber to lower
         //number then fire notification
         if (rowNumber < 0) {
-            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
+            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
                     + "Be Lest Than 0");
             e.printStackTrace(System.out);
             throw e;
         } else if (rowNumber >= getRowCount()) {
-            RuntimeException e = new IndexOutOfBoundsException("Row NumberCan Not "
+            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
                     + "Be Greater Than The Number Of Rows " + getRowCount());
             e.printStackTrace(System.out);
             throw e;
@@ -258,6 +265,7 @@ public class Sheet implements Serializable {
         retRow.setCells(removedCells);
         firePropertyChange(PROP_SHEET_ROW_ADDED, retRow, null);
         isIgnorePropertyChange = false;
+        checkCounts();
         return true;
     }
 
@@ -332,6 +340,34 @@ public class Sheet implements Serializable {
     }
 
     /**
+     * Over writes a row if it already exists in the spread sheet
+     *
+     * @param row the row to use
+     * @param rowNumber the row number where this row will be put. This will
+     * override the row number set in the {@link Cell}s and the {#link Row}
+     * @return true if the operation works
+     */
+    public boolean setRow(Row row, int rowNumber) {
+        if (rowNumber < 0) {
+            RuntimeException e = new IndexOutOfBoundsException("Row Number Can Not "
+                    + "Be Less Than 0");
+            e.printStackTrace(System.out);
+            throw e;
+        }
+
+        if (clearRow(rowNumber) == null) {
+            return false;
+        }
+        for (int c = 0; c < row.getCells().size(); c++) {
+            if (row.getCells().get(c) != null) {
+                cellMap.put(new Point(rowNumber, c), row.getCells().get(c));
+            }
+        }
+        rowStyleMap.put(rowNumber, row.getStyle());
+        return true;
+    }
+
+    /**
      * Gets the row at the specified index
      *
      * @param rowNumber the row index
@@ -366,16 +402,25 @@ public class Sheet implements Serializable {
     }
 
     /**
-     * Adds a {@link Column} to this sheet after the other columns. Cell colum
+     * Adds a {@link Column} to this sheet after the other columns.Cell colum
      * numbers are set and the row numbers are set by their placement in the
      * list. Null entries are allowed
      *
      * @param column the {@link Column} to add
+     * @return true if operation succeeded
      * @see Column
      * @see List
      */
-    public void addColumn(Column column) {
-
+    public boolean addColumn(Column column) {
+        for (int i = 0; i < column.getCells().size(); i++) {
+            if (column.getCells().get(i) != null) {
+                cellMap.put(new Point(i, getColumnCount()), column.getCells().get(i));
+            }
+        }
+        this.columnStyleMap.put(getColumnCount(), column.getStyle());
+        firePropertyChange(PROP_SHEET_COLUMN_ADDED, null, column);
+        checkCounts();
+        return true;
     }
 
     /**
@@ -386,28 +431,129 @@ public class Sheet implements Serializable {
      * @see Column
      */
     public boolean removeColumn(Column column) {
-        return removeColumn(column.getColumnNumber());
+        try {
+            removeColumn(column.getColumnNumber());
+        } catch (Exception e) {
+            return false;
+        }
 
+        return true;
     }
 
     /**
-     * Removes a column by column number
+     * Removes a column by column number and shifts the following columns down
+     * one
      *
      * @param columnNumber the column number to remove
-     * @return boolean saying if it is successful
-     * @throws ArrayIndexOutOfBoundsException thrown when the index is outside
-     * of the column array range
+     * @return Column the column being removed
      * @see Column
      */
-    public boolean removeColumn(int columnNumber) throws ArrayIndexOutOfBoundsException {
-        return true;
-
+    public Column removeColumn(int columnNumber) {
+        if (columnNumber < 0) {
+            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
+                    + "Be Lest Than 0");
+            e.printStackTrace(System.out);
+            throw e;
+        } else if (columnNumber >= getRowCount()) {
+            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
+                    + "Be Greater Than The Number Of Rows " + getRowCount());
+            e.printStackTrace(System.out);
+            throw e;
+        }
+        Column ret = createColumnInstance(columnNumber);
+        List<Cell> cells = new ArrayList<>();
+        Iterator<Point> iterator = cellMap.keySet().iterator();
+        Map<Point, Cell> newCellMap = new HashMap<>(cellMap.size());
+        Map<Integer, Style> styleMap = new HashMap<>(getColumnCount());
+        List<Column> cols = new ArrayList<>(getColumnCount());
+        for (int i = 0; i < getColumnCount(); i++) {
+            cols.add(getColumn(i));
+        }
+        for (int i = 0; i < columnNumber; i++) {
+            cols.get(i).getCells().forEach(cell -> {
+                if (cell != null) {
+                    newCellMap.put(
+                            new Point(cell.getRowNumber(), cell.getColumnNumber()),
+                            cell);
+                }
+            });
+            styleMap.put(i, cols.get(i).getStyle());
+        }
+        ret = cols.get(columnNumber);
+        for (int i = columnNumber + 1; i < getColumnCount(); i++) {
+            cols.get(i).getCells().forEach(cell -> {
+                if (cell != null) {
+                    newCellMap.put(
+                            new Point(cell.getRowNumber(), cell.getColumnNumber() - 1),
+                            cell);
+                }
+            });
+            styleMap.put(i - 1, cols.get(i).getStyle());
+            firePropertyChange(PROP_SHEET_COLUMN_MOVED, i, i - 1);
+        }
+        this.cellMap = newCellMap;
+        this.columnStyleMap = styleMap;
+        checkCounts();
+        return ret;
     }
 
-    public Column getColumn(int index) throws ArrayIndexOutOfBoundsException {
+    /**
+     * Clears the data from a column without removing the column
+     *
+     * @param column the column to be removed
+     * @return true if the operation is successful
+     */
+    public boolean clearColumn(Column column) {
+        return (clearColumn(column.getColumnNumber()) != null);
+    }
+
+    /**
+     * Clears the data from a column without removing the column
+     *
+     * @param columnNumber the column number
+     * @return the column that was removed
+     * @see Column
+     */
+    public Column clearColumn(int columnNumber) {
+        if (columnNumber < 0) {
+            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
+                    + "Be Lest Than 0");
+            e.printStackTrace(System.out);
+            throw e;
+        } else if (columnNumber >= getRowCount()) {
+            RuntimeException e = new IndexOutOfBoundsException("Column Number Can Not "
+                    + "Be Greater Than The Number Of Rows " + getRowCount());
+            e.printStackTrace(System.out);
+            throw e;
+        }
+
+        Column oldCol = getColumn(rowCount);
+        Column newCol = null;
+        oldCol.getCells().forEach(cellMap -> newCol.getCells().add(null));
+        newCol.setStyle(columnStyleMap.get(columnNumber));
+        columnStyleMap.remove(columnNumber);
+        Iterator<Point> iterator = cellMap.keySet().iterator();
+        Point curPoint = null;
+        while (iterator.hasNext()) {
+            curPoint = iterator.next();
+            if (curPoint.y == columnNumber) {
+                cellMap.remove(curPoint);
+            }
+        }
+        firePropertyChange(PROP_SHEET_COLUMN_CLEARED, oldCol, newCol);
+        checkCounts();
+        return oldCol;
+    }
+
+    /**
+     * Gets the column at the index position
+     *
+     * @param index the location of the column
+     * @return the {@link Column}
+     */
+    public Column getColumn(int index) {
         if (index < 0) {
             throw new ArrayIndexOutOfBoundsException("Column Number Is Less Than 0");
-
         }
         return null;
 
