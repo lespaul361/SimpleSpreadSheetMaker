@@ -133,6 +133,7 @@ public class WorkBook implements FileFormats, Serializable {
      * IllegalArgumentException
      * @see Sheet
      */
+
     public boolean removeSheet(String sheetName) {
         for (int i = 0; i < sheets.size(); i++) {
             if (this.sheets.get(i).getSheetName().equalsIgnoreCase(sheetName)) {
