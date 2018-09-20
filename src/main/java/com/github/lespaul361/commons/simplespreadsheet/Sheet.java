@@ -6,8 +6,6 @@
 package com.github.lespaul361.commons.simplespreadsheet;
 
 import com.github.lespaul361.commons.simplespreadsheet.exceptions.LocationExistsException;
-import com.itextpdf.text.pdf.qrcode.Version.ECB;
-import com.thoughtworks.selenium.webdriven.commands.RemoveAllSelections;
 
 import java.awt.Point;
 import java.beans.PropertyChangeEvent;
@@ -21,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+
 import javax.swing.event.EventListenerList;
 
-import org.jopendocument.dom.template.statements.If;
 
 /**
  *
@@ -392,9 +390,10 @@ public class Sheet implements Serializable, RowDelegateInterface {
 	 * @see Column
 	 */
 	public Column createColumnInstance(int columnNumber) {
-		Column c = Column.getInstance(this);
-		c.setColumnNumber(columnNumber);
-		return c;
+		Column column=createColumnInstance();
+		column.setColumnNumber(columnNumber);
+		return column;
+		
 	}
 
 	/**
@@ -543,7 +542,7 @@ public class Sheet implements Serializable, RowDelegateInterface {
 	}
 
 	/**
-	 * Removes a cell to the spreadsheet. The row and column must be set and have a
+	 * Removes a cell from the spreadsheet. The row and column must be set and have a
 	 * value of 0 or greater
 	 * 
 	 * @param cell
@@ -569,7 +568,7 @@ public class Sheet implements Serializable, RowDelegateInterface {
 	}
 
 	/**
-	 * Removes a cell to the spreadsheet.
+	 * Removes a cell from the spreadsheet.
 	 * 
 	 * @param location
 	 *            the location of the cell to be removed
@@ -660,6 +659,7 @@ public class Sheet implements Serializable, RowDelegateInterface {
 
 	}
 
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
