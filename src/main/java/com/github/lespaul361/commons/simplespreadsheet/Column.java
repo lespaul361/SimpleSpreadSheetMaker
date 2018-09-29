@@ -34,7 +34,7 @@ public class Column implements Serializable {
 
     private int columnNumber = -1;
     private List<Cell> cells = new ArrayList<>();
-    private Style style = new ColumnStyle();
+    private ICellStyle style = new ColumnStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private final Sheet sheet;
     private static final long serialVersionUID = -52755945069593L;
@@ -108,7 +108,7 @@ public class Column implements Serializable {
      *
      * @return the style
      */
-    public Style getStyle() {
+    public ICellStyle getStyle() {
         return style;
     }
 
@@ -117,8 +117,8 @@ public class Column implements Serializable {
      *
      * @param style the style to set
      */
-    public void setStyle(Style style) {
-        com.github.lespaul361.commons.simplespreadsheet.Style oldStyle = this.style;
+    public void setStyle(ICellStyle style) {
+        com.github.lespaul361.commons.simplespreadsheet.ICellStyle oldStyle = this.style;
         this.style = style;
         propertyChangeSupport.firePropertyChange(PROP_STYLE, oldStyle, style);
     }

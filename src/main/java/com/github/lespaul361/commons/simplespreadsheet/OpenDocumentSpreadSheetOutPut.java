@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.KeyStore.PrivateKeyEntry;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,10 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
+import org.junit.experimental.theories.Theories;
 
 class OpenDocumentSpreadSheetOutPut {
+	private WorkBook workBook = null;
 	private File manifestXML = null;
 	private File metaXML = null;
 	private File stylesXML = null;
@@ -32,25 +35,33 @@ class OpenDocumentSpreadSheetOutPut {
 	private File contentXML = null;
 	private OutputStream outputStream = null;
 
-	public void createSpreadSheet(OutputStream out) throws IOException {
+	public void createSpreadSheet(OutputStream out, WorkBook workBook) throws IOException {
 		this.outputStream = out;
 		writeManifestFile();
 		writeMetaXML();
-		writeStylesXMP();
+		writeStylesXML();
 		writeMimeType();
+		writeContenetXML();
+		writeToZip();
+		clean();
 	}
 
-	public void createSpreadSheet(File file) throws IOException {
-		createSpreadSheet(new FileOutputStream(file));
+	public void createSpreadSheet(File file, WorkBook workBook) throws IOException {
+		createSpreadSheet(new FileOutputStream(file), workBook);
 	}
 
-	public void createSpreadSheet(String path) throws IOException {
+	public void createSpreadSheet(String path, WorkBook workBook) throws IOException {
 		try {
-			createSpreadSheet(new File(path));
+			createSpreadSheet(new File(path), workBook);
 		} catch (FileNotFoundException e) {
-			File newFile = new File(path);
-			newFile.createNewFile();
-			createSpreadSheet(new File(path));
+			try {
+				File newFile = new File(path);
+				newFile.createNewFile();
+				createSpreadSheet(new File(path), workBook);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+				throw e1;
+			}
 		}
 
 	}
@@ -111,11 +122,11 @@ class OpenDocumentSpreadSheetOutPut {
 
 	}
 
-	private void writeStylesXMP() throws IOException {
+	private void writeStylesXML() throws IOException {
 
 		Element root = new Element("office:document-styles");
-		
-		root.setAttributes(getCommonAttributes(););
+
+		root.setAttributes(getCommonAttributes());
 
 		Element elementO = new Element("office:styles");
 		Element elementA = new Element("office:automatic-styles");
@@ -144,6 +155,9 @@ class OpenDocumentSpreadSheetOutPut {
 		fWriter.close();
 	}
 
+	private void writeContenetXML() {
+	}
+
 	private byte[] getFileBytes(File file) throws FileNotFoundException, IOException {
 		try {
 			Path filePath = Paths.get(file.getAbsolutePath());
@@ -154,7 +168,7 @@ class OpenDocumentSpreadSheetOutPut {
 		}
 	}
 
-	private List<Attribute> getCommonAttributes() {
+	static List<Attribute> getCommonAttributes() {
 		List<Attribute> attributes = new ArrayList<>();
 		attributes.add(new Attribute("xmlns:office", "urn:oasis:names:tc:opendocument:xmlns:office:1.0"));
 		attributes.add(new Attribute("xmlns:svg", "urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0"));
@@ -209,4 +223,13 @@ class OpenDocumentSpreadSheetOutPut {
 		zOut.close();
 
 	}
+
+	private void clean() {
+		this.metaXML.delete();
+		this.manifestXML.delete();
+		this.stylesXML.delete();
+		this.mimeType.delete();
+		this.contentXML.delete();
+	}
+
 }

@@ -11,7 +11,7 @@ import java.awt.Font;
  *
  * @author David Hamilton
  */
-public class ColumnStyle implements Style {
+public class ColumnStyle implements ICellStyle {
 
     @Override
     public boolean isBold() {

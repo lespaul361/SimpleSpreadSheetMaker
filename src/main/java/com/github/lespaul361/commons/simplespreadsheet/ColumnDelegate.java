@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 class ColumnDelegate extends AbstractDelegate implements ColumnDelegateInterface {
 
-	public ColumnDelegate(Sheet sheet, Map<Integer, Style> rowStyleMap, Map<Integer, Style> columnStyleMap) {
+	public ColumnDelegate(Sheet sheet, Map<Integer, ICellStyle> rowStyleMap, Map<Integer, ICellStyle> columnStyleMap) {
 		super(sheet, rowStyleMap, columnStyleMap);
 		// TODO Auto-generated constructor stub
 	}
@@ -104,7 +104,7 @@ class ColumnDelegate extends AbstractDelegate implements ColumnDelegateInterface
 
 	private void shiftColumns(int direction, int startIndex) {
 		List<Column> columns = getColumns();
-		Map<Integer, Style> newColumnStyles = new HashMap<>(columnStyleMap.size());
+		Map<Integer, ICellStyle> newColumnStyles = new HashMap<>(columnStyleMap.size());
 		for (int i = 0; i < startIndex; i++) {
 			newColumnStyles.put(i, newColumnStyles.get(i));
 		}
@@ -121,9 +121,9 @@ class ColumnDelegate extends AbstractDelegate implements ColumnDelegateInterface
 		}
 
 		newColumnStyles.clear();
-		Iterator<Entry<Integer, Style>> entries = newColumnStyles.entrySet().iterator();
+		Iterator<Entry<Integer, ICellStyle>> entries = newColumnStyles.entrySet().iterator();
 		while (entries.hasNext()) {
-			Entry<Integer, Style> entry = entries.next();
+			Entry<Integer, ICellStyle> entry = entries.next();
 			newColumnStyles.put(entry.getKey(), entry.getValue());
 		}
 	}

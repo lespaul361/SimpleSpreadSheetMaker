@@ -5,10 +5,19 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
+import com.itextpdf.text.Font;
+
 /**
  * 
  * @author David Hamilton
  */
-public class CellStyle extends AbstractStyle {
-
+public class CellStyle extends AbstractCellStyle {
+	private static final long serialVersionUID = -527559450690L;
+	/**
+	 * Constructs a new cell style
+	 */
+	public CellStyle() {
+		super();	
+		
+	}
 }

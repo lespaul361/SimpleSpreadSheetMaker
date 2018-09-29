@@ -9,6 +9,6 @@ package com.github.lespaul361.commons.simplespreadsheet;
  * 
  * @author David Hamilton
  */
-public class ClassStyle extends AbstractStyle {
+public class ClassStyle extends AbstractCellStyle {
 
 }
