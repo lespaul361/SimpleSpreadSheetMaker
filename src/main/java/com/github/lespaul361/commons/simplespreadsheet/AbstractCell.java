@@ -21,7 +21,7 @@ public abstract class AbstractCell implements Cell {
 	protected int column = 0;
 	protected String text = "";
 	protected Function function = null;
-	protected ICellStyle style = new CellStyle();
+	protected FontStyle style = new CellStyle();
 	protected final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 	protected Sheet sheet;
 
@@ -84,13 +84,13 @@ public abstract class AbstractCell implements Cell {
 	}
 
 	@Override
-	public ICellStyle getStyle() {
+	public FontStyle getStyle() {
 		return style;
 	}
 
 	@Override
-	public void setStyle(ICellStyle style) {
-		com.github.lespaul361.commons.simplespreadsheet.ICellStyle oldStyle = this.style;
+	public void setStyle(FontStyle style) {
+		com.github.lespaul361.commons.simplespreadsheet.FontStyle oldStyle = this.style;
 		this.style = style;
 		propertyChangeSupport.firePropertyChange(PROP_STYLE, oldStyle, style);
 	}

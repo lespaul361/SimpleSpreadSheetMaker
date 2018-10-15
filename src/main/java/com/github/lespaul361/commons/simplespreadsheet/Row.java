@@ -35,7 +35,7 @@ public class Row implements Serializable, Cloneable {
     public static final String PROP_STYLE = "PROP_STYLE";
     private int rowNumber = -1;
     private List<Cell> cells = new ArrayList<>();
-    private ICellStyle style = new RowStyle();
+    private RowStyle style = new RowStyle();
     private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
     private Sheet sheet;
     private static final long serialVersionUID = -5275594549593L;
@@ -50,7 +50,11 @@ public class Row implements Serializable, Cloneable {
         this.sheet = sheet;
     }
 
-    private Row(Sheet sheet) {
+    /**
+     * Constructs a new row
+     * @param sheet the parent sheet
+     */
+    protected Row(Sheet sheet) {
         this.sheet = sheet;
         addNotificationListener(sheet.rowPropertyChangeListener);
     }
@@ -119,7 +123,7 @@ public class Row implements Serializable, Cloneable {
      *
      * @return the style
      */
-    public ICellStyle getStyle() {
+    public RowStyle getStyle() {
         return style;
     }
 
@@ -128,8 +132,8 @@ public class Row implements Serializable, Cloneable {
      *
      * @param style the style to set
      */
-    public void setStyle(ICellStyle style) {
-        com.github.lespaul361.commons.simplespreadsheet.ICellStyle oldStyle = this.style;
+    public void setStyle(RowStyle style) {
+        com.github.lespaul361.commons.simplespreadsheet.FontStyle oldStyle = this.style;
         this.style = style;
         propertyChangeSupport.firePropertyChange(PROP_STYLE, oldStyle, style);
     }

@@ -98,8 +98,8 @@ public class ColumnTest {
     public void testGetStyle() {
         System.out.println("getStyle");
         Column instance = column;
-        ICellStyle expResult = null;
-        ICellStyle result = instance.getStyle();
+        FontStyle expResult = null;
+        FontStyle result = instance.getStyle();
         assertNotEquals(expResult, result);
 
     }
@@ -110,7 +110,7 @@ public class ColumnTest {
     @Test
     public void testSetStyle() {
         System.out.println("setStyle");
-        ICellStyle style = new CellStyle();
+        FontStyle style = new CellStyle();
         Column instance = column;
         instance.setStyle(style);
         Assert.assertTrue(instance.getStyle() != null);

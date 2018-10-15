@@ -130,19 +130,19 @@ public interface Cell extends Cloneable {
     public void removeNotificationListener(String propertyName, PropertyChangeListener listener);
 
     /**
-     * Gets the {@link ICellStyle} style of the cell
+     * Gets the {@link FontStyle} style of the cell
      * 
-     * @return the {@link ICellStyle} style
+     * @return the {@link FontStyle} style
      */
-    public ICellStyle getStyle();
+    public FontStyle getStyle();
 
     /**
-     * Sets the {@link ICellStyle} style of the cell
+     * Sets the {@link FontStyle} style of the cell
      * 
      * @param style
-     *            the {@link ICellStyle} style to set for the cell
+     *            the {@link FontStyle} style to set for the cell
      */
-    public void setStyle(ICellStyle style);
+    public void setStyle(FontStyle style);
 
     public Object clone();
 }

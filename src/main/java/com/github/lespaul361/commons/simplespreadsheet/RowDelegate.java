@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 class RowDelegate extends AbstractDelegate implements RowDelegateInterface {
 
-	public RowDelegate(Sheet sheet, Map<Integer, ICellStyle> rowStyleMap, Map<Integer, ICellStyle> columnStyleMap) {
+	public RowDelegate(Sheet sheet, Map<Integer, FontStyle> rowStyleMap, Map<Integer, FontStyle> columnStyleMap) {
 		super(sheet, rowStyleMap, columnStyleMap);
 	}
 
@@ -123,7 +123,7 @@ class RowDelegate extends AbstractDelegate implements RowDelegateInterface {
 
 	private void shiftRows(int direction, int startIndex) {
 		List<Row> rows = getRows();
-		Map<Integer, ICellStyle> newRowStyles = new HashMap<>(rowStyleMap.size());
+		Map<Integer, FontStyle> newRowStyles = new HashMap<>(rowStyleMap.size());
 		for (int i = 0; i < startIndex; i++) {
 			newRowStyles.put(i, rowStyleMap.get(i));
 		}
@@ -140,9 +140,9 @@ class RowDelegate extends AbstractDelegate implements RowDelegateInterface {
 		}
 
 		rowStyleMap.clear();
-		Iterator<Entry<Integer, ICellStyle>> entries = newRowStyles.entrySet().iterator();
+		Iterator<Entry<Integer, FontStyle>> entries = newRowStyles.entrySet().iterator();
 		while (entries.hasNext()) {
-			Entry<Integer, ICellStyle> entry = entries.next();
+			Entry<Integer, FontStyle> entry = entries.next();
 			rowStyleMap.put(entry.getKey(), entry.getValue());
 		}
 	}

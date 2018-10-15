@@ -102,9 +102,9 @@ public class Sheet implements Serializable, RowDelegateInterface {
 	private int sheetNumber = 0;
 	// row is x and column is y
 	private Map<Point, Cell> cellMap = new HashMap<>();
-	private Map<Integer, ICellStyle> rowStyleMap = new HashMap<>();
-	private Map<Integer, ICellStyle> columnStyleMap = new HashMap<>();
-	private ICellStyle style = new SheetStyle();
+	private Map<Integer, FontStyle> rowStyleMap = new HashMap<>();
+	private Map<Integer, FontStyle> columnStyleMap = new HashMap<>();
+	private FontStyle style = new SheetStyle();
 	private final transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 	private int rowCount = 0;
 	private int columnCount = 0;
@@ -255,7 +255,7 @@ public class Sheet implements Serializable, RowDelegateInterface {
 	/**
 	 * @return the style
 	 */
-	public ICellStyle getStyle() {
+	public FontStyle getStyle() {
 		return style;
 
 	}
@@ -264,8 +264,8 @@ public class Sheet implements Serializable, RowDelegateInterface {
 	 * @param style
 	 *            the style to set
 	 */
-	public void setStyle(ICellStyle style) {
-		com.github.lespaul361.commons.simplespreadsheet.ICellStyle oldStyle = this.style;
+	public void setStyle(FontStyle style) {
+		com.github.lespaul361.commons.simplespreadsheet.FontStyle oldStyle = this.style;
 
 		this.style = style;
 

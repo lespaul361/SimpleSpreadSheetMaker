@@ -6,9 +6,9 @@ import java.util.Map;
 
 class AbstractDelegate {
 	final Sheet sheet;
-	final  Map<Integer, ICellStyle> rowStyleMap;
-	final Map<Integer, ICellStyle> columnStyleMap;
-	public AbstractDelegate(Sheet sheet,Map<Integer, ICellStyle> rowStyleMap, Map<Integer, ICellStyle> columnStyleMap) {
+	final  Map<Integer, FontStyle> rowStyleMap;
+	final Map<Integer, FontStyle> columnStyleMap;
+	public AbstractDelegate(Sheet sheet,Map<Integer, FontStyle> rowStyleMap, Map<Integer, FontStyle> columnStyleMap) {
 		this.sheet = sheet;
 		this.rowStyleMap=rowStyleMap;
 		this.columnStyleMap=columnStyleMap;

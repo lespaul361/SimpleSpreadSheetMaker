@@ -12,7 +12,7 @@ import java.util.List;
  * 
  * @author David Hamilton
  */
-interface ICellStyle {
+interface FontStyle {
 
 	/**
 	 * @return the bold

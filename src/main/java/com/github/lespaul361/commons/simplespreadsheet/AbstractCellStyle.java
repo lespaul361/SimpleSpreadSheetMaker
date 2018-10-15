@@ -19,7 +19,7 @@ import java.util.Objects;
  * 
  * @author David Hamilton
  */
-public abstract class AbstractCellStyle implements ICellStyle {
+public abstract class AbstractCellStyle implements FontStyle {
 
 	public static final String PROP_BOLD = "PROP_BOLD";
 	public static final String PROP_ITALIC = "PROP_ITALIC";
@@ -164,10 +164,10 @@ public abstract class AbstractCellStyle implements ICellStyle {
 		if (obj == null) {
 			return false;
 		}
-		if (!(obj instanceof ICellStyle)) {
+		if (!(obj instanceof FontStyle)) {
 			return false;
 		}
-		return this.equals((ICellStyle) obj);
+		return this.equals((FontStyle) obj);
 	}
 
 }

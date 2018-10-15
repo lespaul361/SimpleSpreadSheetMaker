@@ -398,8 +398,8 @@ public class SheetTest {
 	public void testGetStyle() {
 		System.out.println("getStyle");
 		Sheet instance = null;
-		ICellStyle expResult = null;
-		ICellStyle result = instance.getStyle();
+		FontStyle expResult = null;
+		FontStyle result = instance.getStyle();
 		assertEquals(expResult, result);
 		// TODO review the generated test code and remove the default call to fail.
 		fail("The test case is a prototype.");
@@ -411,7 +411,7 @@ public class SheetTest {
 	@Test
 	public void testSetStyle() {
 		System.out.println("setStyle");
-		ICellStyle style = null;
+		FontStyle style = null;
 		Sheet instance = null;
 		instance.setStyle(style);
 		// TODO review the generated test code and remove the default call to fail.

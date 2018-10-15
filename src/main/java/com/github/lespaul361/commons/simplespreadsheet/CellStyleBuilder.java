@@ -1,7 +1,7 @@
 package com.github.lespaul361.commons.simplespreadsheet;
 
 public class CellStyleBuilder {
-	private ICellStyle style=(ICellStyle)new DefaultCellStyle();
+	private FontStyle style=(FontStyle)new DefaultCellStyle();
 	
 public CellStyleBuilder() {
 		
