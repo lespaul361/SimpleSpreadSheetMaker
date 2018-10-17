@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet;
+package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
 
 import java.io.WriteAbortedException;
 
@@ -12,8 +12,8 @@ abstract class AbstractOpenDocStyle {
 	final String name;
 	final Properties property;
 	final String STYLE_HEADER = "style:style";
-	final String STYLE_FAMILY="style:family";
-	final String STYLE_NAME="style:name";
+	final String STYLE_FAMILY = "style:family";
+	final String STYLE_NAME = "style:name";
 	
 	public enum Properties {
 		TABLE, ROW, COLUMN, CELL;

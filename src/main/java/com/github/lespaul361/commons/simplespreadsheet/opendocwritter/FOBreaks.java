@@ -1,0 +1,26 @@
+package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+
+import java.awt.Color;
+
+interface FOBreaks extends GetOpenDocAttributes {
+	final String BACKGROUND_COLOR = "fo:background-color";
+	final String BREAK_AFTER = "fo:break-after";
+	final String BREAK_BEFORE = "fo:break-before";
+	
+	enum Breaks {
+		AUTO, COLUMN, PAGE;
+	
+	}
+	
+	public Color getBackGroundColor();
+	
+	public void setBackGroundColor(Color color);
+	
+	public void setBreakBefore(Breaks breakBefore);
+	
+	public Breaks getBreakBefore();
+	
+	public void setBreakAfter(Breaks breakAfter);
+	
+	public Breaks getBreakAfter();
+}

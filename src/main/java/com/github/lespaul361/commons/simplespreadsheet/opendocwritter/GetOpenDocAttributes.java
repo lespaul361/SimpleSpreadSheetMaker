@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet;
+package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
 
 import java.util.HashMap;
 import java.util.List;
