@@ -11,9 +11,9 @@ class OpenDocStyle implements Style {
 	private Boolean isBreak = null;
 	private Integer pageNumber = null;
 	private Float relWidth = null;
-	private String shadow = null;
 	private Float width = null;
 	private WritingModes writingMode = null;
+	private ShadowTypes shadow=null;
 	
 	@Override
 	public List<Attribute> getAttributes() {
@@ -32,7 +32,7 @@ class OpenDocStyle implements Style {
 			ret.add(new Attribute(WIDTH, getWidth().toString()));
 		}
 		if(getShadow() != null) {
-			ret.add(new Attribute(shadow, getShadow().toString()));
+			ret.add(new Attribute(SHADOW, getShadow().toString()));
 		}
 		if(getWritingMode() != null) {
 			ret.add(new Attribute(WRITING_MODE,
@@ -74,12 +74,12 @@ class OpenDocStyle implements Style {
 	}
 	
 	@Override
-	public void setShadow(String shadow) {
+	public void setShadow(ShadowTypes shadow) {
 		this.shadow = shadow;
 	}
 	
 	@Override
-	public String getShadow() {
+	public ShadowTypes getShadow() {
 		return this.shadow;
 	}
 	
