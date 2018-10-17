@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet;
+package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -25,6 +25,8 @@ import org.jdom.input.SAXBuilder;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.junit.experimental.theories.Theories;
+
+import com.github.lespaul361.commons.simplespreadsheet.WorkBook;
 
 class OpenDocumentSpreadSheetOutPut {
 	private WorkBook workBook = null;

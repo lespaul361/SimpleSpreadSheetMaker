@@ -15,9 +15,12 @@ import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Table.Tabl
 import com.itextpdf.text.Font.FontFamily;
 
 class OpenDocTableStyle extends AbstractOpenDocStyle {
+	public OpenDocTableStyle(String family, String name, Properties property) {
+		super(family, name, property);
+			}
+
 	private Element thisElement = null;
 	private final String STYLE_PROP = "style:table-properties";
-	private final String TBL_DISPLAY = "table:display";
 	private final OpenDocFOBreaks foBreaks = new OpenDocFOBreaks();
 	private final OpenDocFOMargin foMargin = new OpenDocFOMargin();
 	private final OpenDocStyle style = new OpenDocStyle();

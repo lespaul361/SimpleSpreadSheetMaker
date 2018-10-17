@@ -7,7 +7,6 @@ import org.jdom.Attribute;
 import org.jdom.Document;
 import org.jdom.Element;
 
-import com.github.lespaul361.commons.simplespreadsheet.OpenDocumentSpreadSheetOutPut;
 import com.github.lespaul361.commons.simplespreadsheet.WorkBook;
 
 class OpenDocContentXMLBuilder {
