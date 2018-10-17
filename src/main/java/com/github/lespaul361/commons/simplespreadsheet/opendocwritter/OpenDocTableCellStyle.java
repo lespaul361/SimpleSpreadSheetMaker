@@ -13,6 +13,8 @@ class OpenDocTableCellStyle extends AbstractOpenDocStyle {
 	private final String styleParent;
 	private final String CELL_PROP = "style:table-cell-properties";
 	private final String CELL_PARENT_PROP = "style:parent-style-name";
+	private final FOBorders borders = new OpenDocFOBorders();
+	private final FOPaddings padding = new OpenDocFOPadding();
 	
 	public OpenDocTableCellStyle(String family, String name, String parent) {
 		super(family, name, Properties.CELL);
