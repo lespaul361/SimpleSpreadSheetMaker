@@ -18,10 +18,22 @@ class OpenDocBorder implements FOBorder {
 	private Color color = null;
 	private Float width = null;
 	private BorderStyles borderStyle = null;
+	//private final int WIDTH = 0;
+	//private final int STYLE = 1;
+	//private final int COLOR = 2;
 	
 	@Override
+	public List<Attribute> getAttributes() {
+		List<Attribute> ret = new ArrayList<>();
+		
+	}
+	
+	private Attribute getAttribute() {
+		
+	}
+	@Override
 	public void setColor(Color color) {
-		this.color = color;		
+		this.color = color;
 	}
 	
 	@Override
@@ -50,8 +62,10 @@ class OpenDocBorder implements FOBorder {
 		return this.borderStyle;
 		
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -64,8 +78,10 @@ class OpenDocBorder implements FOBorder {
 		result = prime * result + ((width == null) ? 0 : width.hashCode());
 		return result;
 	}
-
-	/* (non-Javadoc)
+	
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -99,12 +115,5 @@ class OpenDocBorder implements FOBorder {
 		}
 		return true;
 	}
-
-	@Override
-	public List<Attribute> getAttributes() {
-		List<Attribute>ret=new ArrayList<>() ;
-		
 	
-	}
-		
 }
