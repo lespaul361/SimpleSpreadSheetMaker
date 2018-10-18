@@ -3,12 +3,12 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attri
 import java.awt.Color;
 import java.util.Set;
 
-interface Border {
+interface FOBorder extends GetOpenDocAttributes {
 	enum BorderStyles{NONE,HIDDEN,DOTTED,DASHED,DOUBLE,SOLID,GROOVE,RIDGE,INSET,OUTSET}
 	void setColor(Color color);
 	Color getColor();
 	void setWidth(Float width);
 	Float getWidth();
-	void setBorderStyle(BorderStyles style)
+	void setBorderStyle(BorderStyles style);
 	BorderStyles getBorderStyle();
 }

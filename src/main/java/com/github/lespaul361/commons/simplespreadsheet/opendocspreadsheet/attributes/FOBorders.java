@@ -11,22 +11,22 @@ interface FOBorders extends GetOpenDocAttributes {
 	final String BORDER_RIGHT = "fo:border-right";
 	final String BORDER_TOP = "fo:border-top";
 	
-	void setBorder(Border border);
+	void setBorder(FOBorder border);
 	
-	void setTop(Border border);
+	void setTop(FOBorder border);
 	
-	Border getTop();
+	FOBorder getTop();
 	
-	void setBottom(Border border);
+	void setBottom(FOBorder border);
 	
-	Border getBottom();
+	FOBorder getBottom();
 	
-	void setLeft(Border border);
+	void setLeft(FOBorder border);
 	
-	Border getLeft();
+	FOBorder getLeft();
 	
-	void setRight(Border border);
+	void setRight(FOBorder border);
 	
-	Border getRight();
+	FOBorder getRight();
 	
 }
