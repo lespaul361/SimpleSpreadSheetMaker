@@ -4,7 +4,7 @@ import java.security.AlgorithmParameterGeneratorSpi;
 
 import javax.swing.border.Border;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.GetOpenDocAttributes;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.GetOpenDocAttributes;
 
 interface Table extends GetOpenDocAttributes {
 	public enum Aligns {

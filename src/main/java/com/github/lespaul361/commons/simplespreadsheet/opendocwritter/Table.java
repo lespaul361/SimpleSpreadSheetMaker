@@ -1,5 +1,7 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
 
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.GetOpenDocAttributes;
+
 interface Table extends GetOpenDocAttributes {
 	final String DISPLAY = "table:display";
 	final String ALIGN = "table:align";

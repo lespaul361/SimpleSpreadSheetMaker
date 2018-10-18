@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.jdom.Attribute;
 
-class OpenDocFOBreaks implements FOBreaks {
+public class OpenDocFOBreaks implements FOBreaks {
 	private Color backGroundColor = null;
 	private Breaks beforeBreak = null;
 	private Breaks afterBreak = null;
@@ -60,7 +60,7 @@ class OpenDocFOBreaks implements FOBreaks {
 		return this.afterBreak;
 	}
 	
-	private String toHex(Color color) {
+	public static String toHex(Color color) {
 		Integer r = color.getRed();
 		Integer g = color.getGreen();
 		Integer b = color.getBlue();

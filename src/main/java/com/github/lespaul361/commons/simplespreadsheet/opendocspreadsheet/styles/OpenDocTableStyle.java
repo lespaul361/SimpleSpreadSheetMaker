@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -7,8 +7,13 @@ import java.util.List;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.AbstractOpenDocStyle.Properties;
-import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.FOBreaks.Breaks;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks.Breaks;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.AbstractOpenDocStyle.Properties;
+import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocTable;
+import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Style;
+import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Table;
 import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Style.WritingModes;
 import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Table.BorderModels;
 import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Table.TableAlignments;
@@ -28,7 +33,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOBreaks#getBackGroundColor()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#getBackGroundColor()
 	 */
 	public Color getBackGroundColor() {
 		return foBreaks.getBackGroundColor();
@@ -36,7 +41,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param color
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOBreaks#setBackGroundColor(java.awt.Color)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#setBackGroundColor(java.awt.Color)
 	 */
 	public void setBackGroundColor(Color color) {
 		foBreaks.setBackGroundColor(color);
@@ -45,7 +50,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param breakBefore
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOBreaks#setBreakBefore(com.github.lespaul361.commons.simplespreadsheet.opendocwritter.FOBreaks.Breaks)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#setBreakBefore(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks.Breaks)
 	 */
 	public void setBreakBefore(Breaks breakBefore) {
 		foBreaks.setBreakBefore(breakBefore);
@@ -54,7 +59,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOBreaks#getBreakBefore()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#getBreakBefore()
 	 */
 	public Breaks getBreakBefore() {
 		return foBreaks.getBreakBefore();
@@ -62,7 +67,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param breakAfter
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOBreaks#setBreakAfter(com.github.lespaul361.commons.simplespreadsheet.opendocwritter.FOBreaks.Breaks)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#setBreakAfter(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks.Breaks)
 	 */
 	public void setBreakAfter(Breaks breakAfter) {
 		foBreaks.setBreakAfter(breakAfter);
@@ -71,7 +76,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOBreaks#getBreakAfter()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#getBreakAfter()
 	 */
 	public Breaks getBreakAfter() {
 		return foBreaks.getBreakAfter();
@@ -79,7 +84,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param percent
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMargin(float)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMargin(float)
 	 */
 	public void setMargin(float percent) {
 		foMargin.setMargin(percent);
@@ -88,7 +93,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param percent
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMarginBottom(float)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMarginBottom(float)
 	 */
 	public void setMarginBottom(float percent) {
 		foMargin.setMarginBottom(percent);
@@ -97,7 +102,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#getMarginBottom()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#getMarginBottom()
 	 */
 	public float getMarginBottom() {
 		return foMargin.getMarginBottom();
@@ -105,7 +110,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param percent
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMarginTop(float)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMarginTop(float)
 	 */
 	public void setMarginTop(float percent) {
 		foMargin.setMarginTop(percent);
@@ -114,7 +119,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#getMarginTop()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#getMarginTop()
 	 */
 	public float getMarginTop() {
 		return foMargin.getMarginTop();
@@ -122,7 +127,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param percent
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMarginLeft(float)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMarginLeft(float)
 	 */
 	public void setMarginLeft(float percent) {
 		foMargin.setMarginLeft(percent);
@@ -131,7 +136,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param percent
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMarginRight(float)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMarginRight(float)
 	 */
 	public void setMarginRight(float percent) {
 		foMargin.setMarginRight(percent);
@@ -140,7 +145,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#getMarginRight()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#getMarginRight()
 	 */
 	public float getMarginRight() {
 		return foMargin.getMarginRight();
@@ -148,7 +153,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#getMarginLeft()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#getMarginLeft()
 	 */
 	public float getMarginLeft() {
 		return foMargin.getMarginLeft();
@@ -156,7 +161,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param sz
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMarginBottom(int)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMarginBottom(int)
 	 */
 	public void setMarginBottom(int sz) {
 		foMargin.setMarginBottom(sz);
@@ -165,7 +170,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param sz
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMarginTop(int)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMarginTop(int)
 	 */
 	public void setMarginTop(int sz) {
 		foMargin.setMarginTop(sz);
@@ -174,7 +179,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param sz
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMarginLeft(int)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMarginLeft(int)
 	 */
 	public void setMarginLeft(int sz) {
 		foMargin.setMarginLeft(sz);
@@ -183,7 +188,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param sz
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocFOMargin#setMargineRight(int)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargin#setMargineRight(int)
 	 */
 	public void setMargineRight(int sz) {
 		foMargin.setMargineRight(sz);
@@ -192,7 +197,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param isBreak
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#setMayBreakBetweenRows(java.lang.Boolean)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#setMayBreakBetweenRows(java.lang.Boolean)
 	 */
 	public void setMayBreakBetweenRows(Boolean isBreak) {
 		style.setMayBreakBetweenRows(isBreak);
@@ -201,7 +206,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#isMayBreakBetweenRows()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#isMayBreakBetweenRows()
 	 */
 	public Boolean isMayBreakBetweenRows() {
 		return style.isMayBreakBetweenRows();
@@ -209,7 +214,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param pageNumber
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#setPageNumber(java.lang.Integer)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#setPageNumber(java.lang.Integer)
 	 */
 	public void setPageNumber(Integer pageNumber) {
 		style.setPageNumber(pageNumber);
@@ -218,7 +223,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#getPageNumber()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#getPageNumber()
 	 */
 	public Integer getPageNumber() {
 		return style.getPageNumber();
@@ -226,7 +231,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param percent
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#setRelWidth(java.lang.Float)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#setRelWidth(java.lang.Float)
 	 */
 	public void setRelWidth(Float percent) {
 		style.setRelWidth(percent);
@@ -235,7 +240,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#getRelWidth()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#getRelWidth()
 	 */
 	public Float getRelWidth() {
 		return style.getRelWidth();
@@ -243,7 +248,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param shadow
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#setShadow(java.lang.String)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#setShadow(java.lang.String)
 	 */
 	public void setShadow(String shadow) {
 		style.setShadow(shadow);
@@ -252,7 +257,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#getShadow()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#getShadow()
 	 */
 	public String getShadow() {
 		return style.getShadow();
@@ -260,7 +265,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param width
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#setWidth(java.lang.Float)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#setWidth(java.lang.Float)
 	 */
 	public void setWidth(Float width) {
 		style.setWidth(width);
@@ -269,7 +274,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#getWidth()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#getWidth()
 	 */
 	public Float getWidth() {
 		return style.getWidth();
@@ -277,7 +282,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @param writingMode
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#setWritingMode(com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Style.WritingModes)
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#setWritingMode(com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Style.WritingModes)
 	 */
 	public void setWritingMode(WritingModes writingMode) {
 		style.setWritingMode(writingMode);
@@ -286,7 +291,7 @@ class OpenDocTableStyle extends AbstractOpenDocStyle {
 	
 	/**
 	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocwritter.OpenDocStyle#getWritingMode()
+	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.OpenDocStyle#getWritingMode()
 	 */
 	public WritingModes getWritingMode() {
 		return style.getWritingMode();

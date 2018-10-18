@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 interface FOPaddings extends GetOpenDocAttributes{
 	final String PADDING = "fo:padding";

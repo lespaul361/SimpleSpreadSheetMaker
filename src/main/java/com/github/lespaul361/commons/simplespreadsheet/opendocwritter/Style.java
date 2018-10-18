@@ -1,5 +1,9 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
 
+import org.apache.http.impl.cookie.PublicSuffixFilter;
+
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.GetOpenDocAttributes;
+
 import net.sourceforge.htmlunit.corejs.javascript.commonjs.module.provider.CachingModuleScriptProviderBase;
 
 interface Style extends GetOpenDocAttributes {
@@ -9,6 +13,7 @@ interface Style extends GetOpenDocAttributes {
 	final String WIDTH = "style:width";
 	final String SHADOW = "style:shadow";
 	final String WRITING_MODE = "style:writing-mode";
+	final String CELL_PROTECT = "style:cell-protect";
 	
 	public enum WritingModes {
 		lrtb, rltb, tbrl, tblr, lr, rl, tb, page;
@@ -27,21 +32,28 @@ interface Style extends GetOpenDocAttributes {
 		}
 	}
 	
+	public enum CellProtectionTypes {
+		FORMULA_HIDDEN, HIDDEN_AND_PROTECTED, NONE, PROTECTED;
+		public String toString() {
+			switch (this) {
+				case FORMULA_HIDDEN:
+					return "formual-hidden";
+				case HIDDEN_AND_PROTECTED:
+					return "hidden-and-preotected";
+				case PROTECTED:
+					return "protected";
+				default:
+					return "none";
+			}
+		}
+	}
+	
 	public void setMayBreakBetweenRows(Boolean isBreak);
 	
 	public Boolean isMayBreakBetweenRows();
 	
-	/**
-	 * -1 is auto. -2 is null
-	 * 
-	 * @param pageNumber
-	 */
 	public void setPageNumber(Integer pageNumber);
 	
-	/**
-	 * 
-	 * @return -1 is auto. -2 is null
-	 */
 	public Integer getPageNumber();
 	
 	public void setRelWidth(Float percent);
@@ -59,4 +71,8 @@ interface Style extends GetOpenDocAttributes {
 	public void setWritingMode(WritingModes writingMode);
 	
 	public WritingModes getWritingMode();
+	
+	public void setCellProtection(CellProtectionTypes type);
+	
+	public CellProtectionTypes getCellProtection();
 }

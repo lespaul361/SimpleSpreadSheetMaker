@@ -1,11 +1,11 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Attribute;
 
-class OpenDocFOPadding implements FOPaddings {
+public class OpenDocFOPadding implements FOPaddings {
 	private Float top = null;
 	private Float bottom = null;
 	private Float left = null;

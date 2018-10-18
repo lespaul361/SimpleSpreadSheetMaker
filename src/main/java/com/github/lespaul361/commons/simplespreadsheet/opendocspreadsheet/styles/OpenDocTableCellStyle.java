@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,12 @@ import java.util.List;
 import org.jdom.Attribute;
 import org.jdom.Element;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.AbstractOpenDocStyle.Properties;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBorders;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOPaddings;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBorders;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOPadding;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.AbstractOpenDocStyle.Properties;
+import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.StyleBorderLines;
 
 class OpenDocTableCellStyle extends AbstractOpenDocStyle {
 	private Element thisElement = null;
@@ -15,6 +20,7 @@ class OpenDocTableCellStyle extends AbstractOpenDocStyle {
 	private final String CELL_PARENT_PROP = "style:parent-style-name";
 	private final FOBorders borders = new OpenDocFOBorders();
 	private final FOPaddings padding = new OpenDocFOPadding();
+	private final StyleBorderLines borderLines=new OpenDocStyleBorderLines();
 	
 	public OpenDocTableCellStyle(String family, String name, String parent) {
 		super(family, name, Properties.CELL);

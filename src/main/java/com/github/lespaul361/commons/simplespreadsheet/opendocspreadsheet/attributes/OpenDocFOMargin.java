@@ -1,11 +1,11 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Attribute;
 
-class OpenDocFOMargin implements FOMargins, GetOpenDocAttributes {
+public class OpenDocFOMargin implements FOMargins, GetOpenDocAttributes {
 	private float bottom = -1;
 	private float top = -1;
 	private float left = -1;

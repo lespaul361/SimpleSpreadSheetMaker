@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Attribute;
+
+import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Style;
+import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Style.ShadowTypes;
+import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.Style.WritingModes;
 
 class OpenDocStyle implements Style {
 	private Boolean isBreak = null;

@@ -1,4 +1,4 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.apache.xalan.xsltc.dom.AdaptiveResultTreeImpl;
 import org.jdom.Attribute;
 import org.junit.platform.commons.util.PreconditionViolationException;
 
-class OpenDocFOBorders implements FOBorders {
+public class OpenDocFOBorders implements FOBorders {
 	private Border top = null;
 	private Border bottom = null;
 	private Border left = null;
@@ -16,8 +16,8 @@ class OpenDocFOBorders implements FOBorders {
 	@Override
 	public List<Attribute> getAttributes() {
 		List<Attribute>ret=new ArrayList<>();
-		if(top==bottom&&bottom=left&&left==right) {
-			
+		if(top.equals(bottom)&&bottom.equals(left)&&left.equals(right)) {
+			Attribute attribute=top.get
 		}
 	}
 	
