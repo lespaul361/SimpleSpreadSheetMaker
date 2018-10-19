@@ -1,7 +1,5 @@
 package com.github.lespaul361.commons.simplespreadsheet;
 
-import java.beans.PropertyChangeSupport;
-import java.util.HashMap;
 import java.util.Map;
 
 class AbstractDelegate {

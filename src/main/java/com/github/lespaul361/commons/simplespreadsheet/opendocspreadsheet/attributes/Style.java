@@ -1,12 +1,6 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-import org.apache.http.impl.cookie.PublicSuffixFilter;
-
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.GetOpenDocAttributes;
-
-import net.sourceforge.htmlunit.corejs.javascript.commonjs.module.provider.CachingModuleScriptProviderBase;
-
-interface Style extends GetOpenDocAttributes {
+public interface Style extends GetOpenDocAttributes {
 	final String IS_BREAK = "style:may-break-between-rows";
 	final String PAGE_NUMBER = "style:page-number";
 	final String REL_WIDTH = "style:rel-width";

@@ -5,7 +5,6 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
-import java.awt.Font;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Objects;

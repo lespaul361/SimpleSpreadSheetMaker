@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jdom.Attribute;
 
-public class OpenDocFOMargin implements FOMargins, GetOpenDocAttributes {
+public class OpenDocFOMargins implements FOMargins, GetOpenDocAttributes {
 	private float bottom = -1;
 	private float top = -1;
 	private float left = -1;

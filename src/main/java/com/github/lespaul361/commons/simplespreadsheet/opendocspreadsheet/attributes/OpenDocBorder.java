@@ -1,20 +1,12 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.awt.Color;
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.jdom.Attribute;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Border;
-
-class OpenDocBorder implements FOBorder {
+public class OpenDocBorder implements FOBorder {
 	private Color color = null;
 	private Float width = null;
 	private BorderStyles borderStyle = null;

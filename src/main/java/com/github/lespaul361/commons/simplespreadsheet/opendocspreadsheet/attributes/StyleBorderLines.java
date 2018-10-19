@@ -1,11 +1,6 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-import java.util.Set;
-
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.GetOpenDocAttributes;
-import com.google.common.base.FinalizablePhantomReference;
-
-interface StyleBorderLines extends GetOpenDocAttributes {
+public interface StyleBorderLines extends GetOpenDocAttributes {
 	final String BORDER_LINE_WIDTH = "style:border-line-width";
 	final String BORDER_LINE_WIDTH_LEFT = "style:border-line-width-left";
 	final String BORDER_LINE_WIDTH_RIGHT = "style:border-line-width-right";

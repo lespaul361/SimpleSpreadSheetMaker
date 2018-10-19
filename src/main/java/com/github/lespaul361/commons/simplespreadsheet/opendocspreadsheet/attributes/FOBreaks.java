@@ -2,7 +2,7 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attri
 
 import java.awt.Color;
 
-interface FOBreaks extends GetOpenDocAttributes {
+public interface FOBreaks extends GetOpenDocAttributes {
 	final String BACKGROUND_COLOR = "fo:background-color";
 	final String BREAK_AFTER = "fo:break-after";
 	final String BREAK_BEFORE = "fo:break-before";

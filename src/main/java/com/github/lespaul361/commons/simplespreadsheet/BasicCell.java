@@ -5,9 +5,10 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
+import static java.util.Arrays.asList;
+
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
-import static java.util.Arrays.asList;
 
 /**
  *

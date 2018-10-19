@@ -1,10 +1,6 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-import org.apache.bcel.generic.FLOAD;
-
-import com.google.common.base.FinalizablePhantomReference;
-
-interface FOBorders extends GetOpenDocAttributes {
+public interface FOBorders extends GetOpenDocAttributes {
 	final String BORDER = "fo:border";
 	final String BORDER_BOTTOM = "fo:border-bottom";
 	final String BORDER_LEFT = "fo:border-left";

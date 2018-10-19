@@ -1,6 +1,6 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-interface FOPaddings extends GetOpenDocAttributes{
+public interface FOPaddings extends GetOpenDocAttributes{
 	final String PADDING = "fo:padding";
 	final String PADDING_BOTTOM = "fo:padding-bottom";
 	final String PADDING_LEFT = "fo:padding-left";

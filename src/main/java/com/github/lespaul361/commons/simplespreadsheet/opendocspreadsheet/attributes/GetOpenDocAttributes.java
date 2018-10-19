@@ -1,10 +1,9 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.jdom.Attribute;
 
-interface GetOpenDocAttributes {
+public interface GetOpenDocAttributes {
 	public List<Attribute> getAttributes();
 }

@@ -2,7 +2,7 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attri
 
 import java.awt.Color;
 
-class OpenDocColor extends Color {
+public class OpenDocColor extends Color {
 	public OpenDocColor(Color c) {
 		super(c.getRed(), c.getGreen(), c.getBlue());
 	}

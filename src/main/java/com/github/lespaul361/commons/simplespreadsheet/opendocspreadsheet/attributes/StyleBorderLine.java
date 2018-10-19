@@ -1,14 +1,11 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Attribute;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.GetOpenDocAttributes;
-import com.microsoft.schemas.office.office.impl.STInsetModeImpl;
-
-class StyleBorderLine implements GetOpenDocAttributes {
+public class StyleBorderLine implements GetOpenDocAttributes {
 	private Float innerLineWidth = null;
 	private Float distanceBetween = null;
 	private Float outerLineWidth = null;

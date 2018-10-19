@@ -5,8 +5,6 @@
  */
 package com.github.lespaul361.commons.simplespreadsheet;
 
-import com.itextpdf.text.Font;
-
 /**
  * 
  * @author David Hamilton

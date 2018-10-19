@@ -2,7 +2,7 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attri
 
 import java.awt.Color;
 
-interface FOBackGroundColor extends GetOpenDocAttributes {
+public interface FOBackGroundColor extends GetOpenDocAttributes {
 	final String Back_Ground_Color="fo:background-color";
 	Color getBackGroundColor();
 	void setBackGroundColor(Color c);

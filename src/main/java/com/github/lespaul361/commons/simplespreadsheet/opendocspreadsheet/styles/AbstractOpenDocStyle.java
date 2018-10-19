@@ -1,11 +1,6 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles;
 
-import java.io.WriteAbortedException;
-
 import org.jdom.Element;
-
-import com.google.common.collect.Table;
-import com.opera.core.systems.scope.protos.Esdbg6Protos.BreakpointID;
 
 abstract class AbstractOpenDocStyle {
 	final String family;

@@ -1,15 +1,11 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Attribute;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.StyleBorderLine;
-import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.StyleBorderLines;
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-
-class OpenDocStyleBorderLines implements StyleBorderLines {
+public class OpenDocStyleBorderLines implements StyleBorderLines {
 	private StyleBorderLine top = null;
 	private StyleBorderLine bottom = null;
 	private StyleBorderLine left = null;

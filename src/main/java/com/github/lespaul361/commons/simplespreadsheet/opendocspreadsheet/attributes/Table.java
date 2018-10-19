@@ -1,8 +1,6 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.GetOpenDocAttributes;
-
-interface Table extends GetOpenDocAttributes {
+public interface Table extends GetOpenDocAttributes {
 	final String DISPLAY = "table:display";
 	final String ALIGN = "table:align";
 	final String BORDER_MODEL = "table:border-model";

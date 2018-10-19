@@ -1,8 +1,6 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
-import org.junit.validator.PublicClassValidator;
-
-interface FOMargins extends GetOpenDocAttributes {
+public interface FOMargins extends GetOpenDocAttributes {
 	final String MARGIN = "fo:margin";
 	final String MARGIN_BOTTOM = "fo:margin-bottom";
 	final String MARGIN_TOP = "fo:margin-top";

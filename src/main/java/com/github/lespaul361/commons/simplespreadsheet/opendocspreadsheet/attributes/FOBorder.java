@@ -1,11 +1,8 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.awt.Color;
-import java.util.Set;
 
-import com.itextpdf.text.pdf.PdfStructTreeController.returnType;
-
-interface FOBorder extends GetOpenDocAttributes {
+public interface FOBorder extends GetOpenDocAttributes {
 	enum BorderStyles {
 		NONE, HIDDEN, DOTTED, DASHED, DOUBLE, SOLID, GROOVE, RIDGE, INSET, OUTSET;
 		public long hashcode() {

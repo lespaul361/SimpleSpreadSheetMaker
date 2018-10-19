@@ -10,8 +10,8 @@ import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attrib
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOPaddings;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBorders;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOPadding;
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.styles.AbstractOpenDocStyle.Properties;
-import com.github.lespaul361.commons.simplespreadsheet.opendocwritter.StyleBorderLines;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyleBorderLines;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.StyleBorderLines;
 
 class OpenDocTableCellStyle extends AbstractOpenDocStyle {
 	private Element thisElement = null;

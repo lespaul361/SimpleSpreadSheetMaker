@@ -1,14 +1,11 @@
-package com.github.lespaul361.commons.simplespreadsheet.opendocwritter;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Attribute;
 
-class OpenDocTable implements Table {
+public class OpenDocTable implements Table {
 	private TableAlignments alignment = null;
 	private Boolean isDisplay = null;
 	private BorderModels borderModel = null;
