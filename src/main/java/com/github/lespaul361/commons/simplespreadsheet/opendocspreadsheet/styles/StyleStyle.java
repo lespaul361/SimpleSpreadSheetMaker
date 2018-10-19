@@ -2,12 +2,25 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.style
 
 import java.util.Collection;
 
-import org.openqa.selenium.remote.html5.AddApplicationCache;
-
+import org.jdom.Element;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.properties.*;
 
 public interface StyleStyle {
-	void addProptery(Property property); 
+	enum Families{
+		TABLE;
+		public String toString() {
+			switch(this) {
+				case TABLE:
+					return "table";
+			}
+			return "";
+		}
+	}
+	void addProptery(Property property);
+	
 	void addProperties(Collection<Property> properties);
+	
 	void addProperties(Property[] properties);
+	
+	public Element getElement();
 }

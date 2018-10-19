@@ -2,7 +2,7 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.style
 
 import org.jdom.Element;
 
-abstract class AbstractOpenDocStyle {
+abstract class AbstractOpenDocStyle implements StyleStyle{
 	final String family;
 	final String name;
 	final Properties property;
