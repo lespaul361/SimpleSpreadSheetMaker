@@ -27,6 +27,37 @@ public interface FOBorder extends GetOpenDocAttributes {
 		}
 	}
 	
+	enum BorderLocations {
+		BORDER, BORDER_LEFT, BORDER_RIGHT, BORDER_TOP, BORDER_BOTTOM;
+		public long hashcode() {
+			byte[] buffer = toString().getBytes();
+			long ret = 0;
+			int magNum = 89;
+			for (byte b : buffer) {
+				ret += b * magNum;
+			}
+			return ret;
+		}
+		
+		public String toString() {
+			String s=this.name();
+			s=s.toLowerCase();
+			s=s.replace("_", "-");
+			return s;
+		}
+		
+		public String toFOString() {
+			return "fo:" + this.toString();
+		}
+		
+		public boolean equals(BorderStyles style) {
+			if(style.hashcode()!=style.hashcode()){
+				return false;
+			}
+			return true;
+		}
+	}
+	
 	void setColor(Color color);
 	
 	Color getColor();

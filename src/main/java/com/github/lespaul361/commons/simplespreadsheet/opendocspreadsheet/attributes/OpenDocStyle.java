@@ -12,7 +12,7 @@ public class OpenDocStyle implements Style {
 	private Float width = null;
 	private WritingModes writingMode = null;
 	private ShadowTypes shadow=null;
-	
+	private CellProtectionTypes cellProtection=null;
 	@Override
 	public List<Attribute> getAttributes() {
 		List<Attribute> ret = new ArrayList<>();
@@ -35,6 +35,10 @@ public class OpenDocStyle implements Style {
 		if(getWritingMode() != null) {
 			ret.add(new Attribute(WRITING_MODE,
 					getWritingMode().name().toLowerCase()));
+		}
+		if(cellProtection!=null) {
+			ret.add(new Attribute(CELL_PROTECT,
+					getCellProtection().toString()));
 		}
 		
 		return ret;
@@ -99,6 +103,16 @@ public class OpenDocStyle implements Style {
 	@Override
 	public WritingModes getWritingMode() {
 		return this.writingMode;
+	}
+
+	@Override
+	public void setCellProtection(CellProtectionTypes type) {
+		this.cellProtection=type;
+	}
+
+	@Override
+	public CellProtectionTypes getCellProtection() {
+		return this.cellProtection;
 	}
 	
 }

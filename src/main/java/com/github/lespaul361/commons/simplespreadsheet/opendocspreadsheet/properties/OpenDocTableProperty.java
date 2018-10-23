@@ -7,6 +7,10 @@ import org.jdom.Attribute;
 import org.jdom.Element;
 
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.*;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks.Breaks;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.CellProtectionTypes;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.ShadowTypes;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.WritingModes;
 
 public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	private final String STYLE_PROP = "style:table-properties";

@@ -7,7 +7,7 @@ public interface FOBreaks extends GetOpenDocAttributes {
 	final String BREAK_AFTER = "fo:break-after";
 	final String BREAK_BEFORE = "fo:break-before";
 	
-	enum Breaks {
+	public enum Breaks {
 		AUTO, COLUMN, PAGE;
 	
 	}
