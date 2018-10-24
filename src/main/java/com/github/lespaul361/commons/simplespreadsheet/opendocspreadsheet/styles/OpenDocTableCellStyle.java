@@ -9,7 +9,7 @@ import org.jdom.Element;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBorders;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOPaddings;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBorders;
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOPadding;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOPaddingsImp;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyleBorderLines;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.StyleBorderLines;
 
@@ -19,7 +19,7 @@ class OpenDocTableCellStyle extends AbstractOpenDocStyle {
 	private final String CELL_PROP = "style:table-cell-properties";
 	private final String CELL_PARENT_PROP = "style:parent-style-name";
 	private final FOBorders borders = new OpenDocFOBorders();
-	private final FOPaddings padding = new OpenDocFOPadding();
+	private final FOPaddings padding = new FOPaddingsImp();
 	private final StyleBorderLines borderLines=new OpenDocStyleBorderLines();
 	
 	public OpenDocTableCellStyle(String family, String name, String parent) {

@@ -208,11 +208,11 @@ public interface FOBorder extends GetOpenDocAttributes {
 	Float getWidth();
 
 	/**
-	 * Checks if the boader width is stored as a percentage
+	 * Checks if the border width is stored as a percentage
 	 * 
 	 * @return true if it is a percentage and false if it is in pixels
 	 */
-	boolean isborderWidthPercent();
+	boolean isBorderWidthPercent();
 
 	/**
 	 * Sets the way the border line should be drawn

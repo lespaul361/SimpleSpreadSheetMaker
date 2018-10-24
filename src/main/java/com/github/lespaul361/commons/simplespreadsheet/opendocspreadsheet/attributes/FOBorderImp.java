@@ -73,7 +73,7 @@ public class FOBorderImp implements FOBorder {
 	}
 
 	@Override
-	public boolean isborderWidthPercent() {
+	public boolean isBorderWidthPercent() {
 		return this.isPercent;
 	}
 

@@ -1,5 +1,6 @@
 package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Attribute;
@@ -9,65 +10,83 @@ public class FOBordersImp implements FOBorders {
 	private FOBorder bottom = null;
 	private FOBorder left = null;
 	private FOBorder right = null;
-	
+	private static String FO_BORDER = "fo:border";
+	private static String FO_BORDER_TOP = "fo:border-top";
+	private static String FO_BORDER_BOTTOM = "fo:border-bottom";
+	private static String FO_BORDER_RIGHT = "fo:border-right";
+	private static String FO_BORDER_LEFT = "fo:border-left";
+
 	@Override
 	public List<Attribute> getAttributes() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Attribute> ret = new ArrayList<>();
+		if (top.equals(bottom) && left.equals(right) && top.equals(left)) {
+			Attribute att = new Attribute(FO_BORDER, top.getAttributes().get(0).getValue());
+			ret.add(att);
+			return ret;
+		}
+		if (top != null) {
+			Attribute att = new Attribute(FO_BORDER_TOP, top.getAttributes().get(0).getValue());
+			ret.add(att);
+		}
+		if (bottom != null) {
+			Attribute att = new Attribute(FO_BORDER_BOTTOM, top.getAttributes().get(0).getValue());
+			ret.add(att);
+		}
+		if (left != null) {
+			Attribute att = new Attribute(FO_BORDER_LEFT, top.getAttributes().get(0).getValue());
+			ret.add(att);
+		}
+		if (right != null) {
+			Attribute att = new Attribute(FO_BORDER_RIGHT, top.getAttributes().get(0).getValue());
+			ret.add(att);
+		}
+		return ret;
 	}
 
 	@Override
 	public void setBorder(FOBorder border) {
-		// TODO Auto-generated method stub
-		
+		this.top = this.bottom = this.left = this.right = border;
 	}
 
 	@Override
 	public void setTopBorder(FOBorder border) {
-		// TODO Auto-generated method stub
-		
+		this.top = border;
+
 	}
 
 	@Override
 	public FOBorder getTopBorder() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.top;
 	}
 
 	@Override
 	public void setBottomBorder(FOBorder border) {
-		// TODO Auto-generated method stub
-		
+		this.bottom = border;
 	}
 
 	@Override
 	public FOBorder getBottomBorder() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.bottom;
 	}
 
 	@Override
 	public void setLeftBorder(FOBorder border) {
-		// TODO Auto-generated method stub
-		
+		this.left = border;
 	}
 
 	@Override
 	public FOBorder getLeftBorder() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.left;
 	}
 
 	@Override
 	public void setRightBorder(FOBorder border) {
-		// TODO Auto-generated method stub
-		
+		this.right = border;
 	}
 
 	@Override
 	public FOBorder getRightBorder() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.right;
 	}
 
 }

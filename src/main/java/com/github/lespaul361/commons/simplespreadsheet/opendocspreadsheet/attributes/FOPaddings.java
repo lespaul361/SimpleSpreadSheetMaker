@@ -9,19 +9,19 @@ public interface FOPaddings extends GetOpenDocAttributes{
 	
 	void setFloat(Float padding);
 	
-	void setTop(Float padding);
+	void setTopPadding(Float padding);
 	
-	Float getTop();
+	Float getTopPadding();
 	
-	void setBottom(Float padding);
+	void setBottomPadding(Float padding);
 	
-	Float getBottom();
+	Float getBottomPadding();
 	
-	void setLeft(Float padding);
+	void setLeftPadding(Float padding);
 	
-	Float getLeft();
+	Float getLeftPadding();
 	
-	void setRight(Float padding);
+	void setRightPadding(Float padding);
 	
-	Float getRight();
+	Float getRightPadding();
 }

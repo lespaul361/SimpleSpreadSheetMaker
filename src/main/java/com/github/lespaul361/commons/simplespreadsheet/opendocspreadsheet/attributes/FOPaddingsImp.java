@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jdom.Attribute;
 
-public class OpenDocFOPadding implements FOPaddings {
+public class FOPaddingsImp implements FOPaddings {
 	private Float top = null;
 	private Float bottom = null;
 	private Float left = null;
@@ -49,44 +49,44 @@ public class OpenDocFOPadding implements FOPaddings {
 	}
 	
 	@Override
-	public void setTop(Float padding) {
+	public void setTopPadding(Float padding) {
 		this.top = padding;
 	}
 	
 	@Override
-	public Float getTop() {
+	public Float getTopPadding() {
 		return this.top;
 	}
 	
 	@Override
-	public void setBottom(Float padding) {
+	public void setBottomPadding(Float padding) {
 		this.bottom = padding;
 	}
 	
 	@Override
-	public Float getBottom() {
+	public Float getBottomPadding() {
 		return this.bottom;
 		
 	}
 	
 	@Override
-	public void setLeft(Float padding) {
+	public void setLeftPadding(Float padding) {
 		this.left = padding;
 	}
 	
 	@Override
-	public Float getLeft() {
+	public Float getLeftPadding() {
 		return this.left;
 		
 	}
 	
 	@Override
-	public void setRight(Float padding) {
+	public void setRightPadding(Float padding) {
 		this.right = padding;
 	}
 	
 	@Override
-	public Float getRight() {
+	public Float getRightPadding() {
 		return this.right;
 		
 	}
