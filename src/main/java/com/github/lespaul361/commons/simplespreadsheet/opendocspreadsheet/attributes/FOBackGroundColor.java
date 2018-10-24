@@ -23,7 +23,14 @@ public interface FOBackGroundColor extends GetOpenDocAttributes, FOColor {
 	 */
 	void setBackGroundColor(Color c);
 
+	/**
+	 * Default method that uses {@link getBackGroundColor} to make a hex value. Null
+	 * is possible
+	 * 
+	 * @return the hex value as string or null
+	 */
 	default String toHexString() {
-		return FOColor.toHex(getBackGroundColor());
+		String s = getBackGroundColor() == null ? null : FOColor.toHex(getBackGroundColor());
+		return s;
 	}
 }
