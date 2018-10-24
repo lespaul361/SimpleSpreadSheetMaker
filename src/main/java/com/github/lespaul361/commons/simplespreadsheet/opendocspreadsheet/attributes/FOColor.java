@@ -2,19 +2,7 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attri
 
 import java.awt.Color;
 
-public class OpenDocColor extends Color {
-	public OpenDocColor(Color c) {
-		super(c.getRed(), c.getGreen(), c.getBlue());
-	}
-	
-	public OpenDocColor(int r, int g, int b) {
-		super(r, g, b);
-	}
-	
-	public OpenDocColor(int rgb) {
-		super(rgb);
-	}
-	
+public interface FOColor {
 	public static String toHex(Color color) {
 		Integer r = color.getRed();
 		Integer g = color.getGreen();
@@ -25,11 +13,7 @@ public class OpenDocColor extends Color {
 		while (hex.length() < 6) {
 			hex = "0" + hex;
 		}
-		hex = "Hex Code: #" + hex;
+		hex = "#" + hex;
 		return hex;
-	}
-	
-	public String toHex() {
-		return OpenDocColor.toHex(this);
 	}
 }

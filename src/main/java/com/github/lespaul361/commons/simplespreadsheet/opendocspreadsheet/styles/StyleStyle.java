@@ -3,7 +3,8 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.style
 import java.util.Collection;
 
 import org.jdom.Element;
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.properties.*;
+
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.properties.Property;
 
 public interface StyleStyle {
 	enum Families{

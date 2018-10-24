@@ -4,13 +4,19 @@ import java.awt.Color;
 import java.util.List;
 
 import org.jdom.Attribute;
-import org.jdom.Element;
 
-import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.*;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks.Breaks;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOMargins;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.CellProtectionTypes;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.ShadowTypes;
 import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.WritingModes;
+import com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Table;
 
 public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	private final String STYLE_PROP = "style:table-properties";
@@ -18,11 +24,11 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	private final FOMargins foMargins = new OpenDocFOMargins();
 	private final Style style = new OpenDocStyle();
 	private final Table table = new OpenDocTable();
-	
+
 	public OpenDocTableProperty() {
 		super("style:table-properties");
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#getBackGroundColor()
@@ -30,7 +36,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public Color getBackGroundColor() {
 		return foBreaks.getBackGroundColor();
 	}
-	
+
 	/**
 	 * @param color
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#setBackGroundColor(java.awt.Color)
@@ -39,7 +45,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foBreaks.setBackGroundColor(color);
 		createElement();
 	}
-	
+
 	/**
 	 * @param breakBefore
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#setBreakBefore(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks.Breaks)
@@ -48,7 +54,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foBreaks.setBreakBefore(breakBefore);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#getBreakBefore()
@@ -56,7 +62,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public Breaks getBreakBefore() {
 		return foBreaks.getBreakBefore();
 	}
-	
+
 	/**
 	 * @param breakAfter
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#setBreakAfter(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.FOBreaks.Breaks)
@@ -65,7 +71,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foBreaks.setBreakAfter(breakAfter);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOBreaks#getBreakAfter()
@@ -73,7 +79,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public Breaks getBreakAfter() {
 		return foBreaks.getBreakAfter();
 	}
-	
+
 	/**
 	 * @param percent
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMargin(float)
@@ -82,7 +88,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMargin(percent);
 		createElement();
 	}
-	
+
 	/**
 	 * @param percent
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMarginBottom(float)
@@ -91,7 +97,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMarginBottom(percent);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#getMarginBottom()
@@ -99,7 +105,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public float getMarginBottom() {
 		return foMargins.getMarginBottom();
 	}
-	
+
 	/**
 	 * @param percent
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMarginTop(float)
@@ -108,7 +114,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMarginTop(percent);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#getMarginTop()
@@ -116,7 +122,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public float getMarginTop() {
 		return foMargins.getMarginTop();
 	}
-	
+
 	/**
 	 * @param percent
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMarginLeft(float)
@@ -125,7 +131,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMarginLeft(percent);
 		createElement();
 	}
-	
+
 	/**
 	 * @param percent
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMarginRight(float)
@@ -134,7 +140,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMarginRight(percent);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#getMarginRight()
@@ -142,7 +148,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public float getMarginRight() {
 		return foMargins.getMarginRight();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#getMarginLeft()
@@ -150,7 +156,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public float getMarginLeft() {
 		return foMargins.getMarginLeft();
 	}
-	
+
 	/**
 	 * @param sz
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMarginBottom(int)
@@ -159,7 +165,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMarginBottom(sz);
 		createElement();
 	}
-	
+
 	/**
 	 * @param sz
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMarginTop(int)
@@ -168,7 +174,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMarginTop(sz);
 		createElement();
 	}
-	
+
 	/**
 	 * @param sz
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMarginLeft(int)
@@ -177,7 +183,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMarginLeft(sz);
 		createElement();
 	}
-	
+
 	/**
 	 * @param sz
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocFOMargins#setMargineRight(int)
@@ -186,7 +192,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		foMargins.setMargineRight(sz);
 		createElement();
 	}
-	
+
 	/**
 	 * @param isBreak
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#setMayBreakBetweenRows(java.lang.Boolean)
@@ -195,7 +201,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		style.setMayBreakBetweenRows(isBreak);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#isMayBreakBetweenRows()
@@ -203,7 +209,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public Boolean isMayBreakBetweenRows() {
 		return style.isMayBreakBetweenRows();
 	}
-	
+
 	/**
 	 * @param pageNumber
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#setPageNumber(java.lang.Integer)
@@ -212,7 +218,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		style.setPageNumber(pageNumber);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#getPageNumber()
@@ -220,7 +226,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public Integer getPageNumber() {
 		return style.getPageNumber();
 	}
-	
+
 	/**
 	 * @param percent
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#setRelWidth(java.lang.Float)
@@ -229,7 +235,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		style.setRelWidth(percent);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#getRelWidth()
@@ -237,7 +243,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public Float getRelWidth() {
 		return style.getRelWidth();
 	}
-	
+
 	/**
 	 * @param type
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style#setCellProtection(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.CellProtectionTypes)
@@ -246,7 +252,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		style.setCellProtection(type);
 		createElement();
 	}
-	
+
 	/**
 	 * @param shadow
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#setShadow(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.ShadowTypes)
@@ -255,7 +261,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		style.setShadow(shadow);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style#getCellProtection()
@@ -263,7 +269,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public CellProtectionTypes getCellProtection() {
 		return style.getCellProtection();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#getShadow()
@@ -271,7 +277,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public ShadowTypes getShadow() {
 		return style.getShadow();
 	}
-	
+
 	/**
 	 * @param width
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#setWidth(java.lang.Float)
@@ -280,7 +286,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		style.setWidth(width);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#getWidth()
@@ -288,7 +294,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public Float getWidth() {
 		return style.getWidth();
 	}
-	
+
 	/**
 	 * @param writingMode
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#setWritingMode(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Style.WritingModes)
@@ -297,7 +303,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		style.setWritingMode(writingMode);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocStyle#getWritingMode()
@@ -305,7 +311,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public WritingModes getWritingMode() {
 		return style.getWritingMode();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable#getAttributes()
@@ -313,24 +319,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 	public List<Attribute> getAttributes() {
 		return table.getAttributes();
 	}
-	
-	/**
-	 * @param align
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable#setAlign(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Table.TableAlignments)
-	 */
-	public void setAlign(TableAlignments align) {
-		table.setAlign(align);
-		createElement();
-	}
-	
-	/**
-	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable#getAlign()
-	 */
-	public TableAlignments getAlign() {
-		return table.getAlign();
-	}
-	
+
 	/**
 	 * @param b
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable#setDisplay(java.lang.Boolean)
@@ -339,30 +328,13 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		table.setDisplay(b);
 		createElement();
 	}
-	
+
 	/**
 	 * @return
 	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable#isDisplay()
 	 */
 	public Boolean isDisplay() {
 		return table.isDisplay();
-	}
-	
-	/**
-	 * @param borderModel
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable#setBorderModel(com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.Table.BorderModels)
-	 */
-	public void setBorderModel(BorderModels borderModel) {
-		table.setBorderModel(borderModel);
-		createElement();
-	}
-	
-	/**
-	 * @return
-	 * @see com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attributes.OpenDocTable#getBorderModel()
-	 */
-	public BorderModels getBorderModel() {
-		return table.getBorderModel();
 	}
 
 	@Override
@@ -371,7 +343,7 @@ public class OpenDocTableProperty extends AbstractOpenDocProperty {
 		addAttributes(foMargins);
 		addAttributes(style);
 		addAttributes(table);
-		
+
 	}
-	
+
 }

@@ -3,9 +3,7 @@ package com.github.lespaul361.commons.simplespreadsheet.opendocspreadsheet.attri
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.xalan.xsltc.dom.AdaptiveResultTreeImpl;
 import org.jdom.Attribute;
-import org.junit.platform.commons.util.PreconditionViolationException;
 
 public class OpenDocFOBorders implements FOBorders {
 	private FOBorder top = null;
@@ -44,28 +42,28 @@ public class OpenDocFOBorders implements FOBorders {
 	}
 
 	@Override
-	public void setTop(FOBorder border) {
+	public void setTopBorder(FOBorder border) {
 		this.top = border;
 	}
 
 	@Override
-	public FOBorder getTop() {
+	public FOBorder getTopBorder() {
 		return this.top;
 	}
 
 	@Override
-	public void setBottom(FOBorder border) {
+	public void setBottomBorder(FOBorder border) {
 		this.bottom = border;
 
 	}
 
 	@Override
-	public FOBorder getBottom() {
+	public FOBorder getBottomBorder() {
 		return this.bottom;
 	}
 
 	@Override
-	public void setLeft(FOBorder border) {
+	public void setLeftBorder(FOBorder border) {
 		this.left = border;
 	}
 
@@ -75,13 +73,13 @@ public class OpenDocFOBorders implements FOBorders {
 	}
 
 	@Override
-	public void setRight(FOBorder border) {
+	public void setRightBorder(FOBorder border) {
 		this.right = border;
 
 	}
 
 	@Override
-	public FOBorder getRight() {
+	public FOBorder getRightBorder() {
 		return this.right;
 	}
 
