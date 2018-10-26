@@ -18,6 +18,7 @@ public abstract class AbstractOpenDocProperty implements Property {
 	}
 	
 	void createElement() {
+		clearAttributes();
 		refreshAttributeContainers();
 		Element element = new Element(this.propertyName);
 		element.setAttributes(attributes);

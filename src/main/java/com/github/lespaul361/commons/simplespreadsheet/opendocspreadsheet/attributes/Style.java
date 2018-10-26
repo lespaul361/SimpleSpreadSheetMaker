@@ -10,11 +10,19 @@ public interface Style extends GetOpenDocAttributes {
 	final String CELL_PROTECT = "style:cell-protect";
 	
 	public enum WritingModes {
-		lrtb, rltb, tbrl, tblr, lr, rl, tb, page;
+		lrtb, 
+		rltb, 
+		tbrl, 
+		tblr, 
+		lr, 
+		rl, 
+		tb, 
+		page;
 	}
 	
 	public enum ShadowTypes {
-		CONSIDER_SHIFTS, DISREGARD_SHIFTS;
+		CONSIDER_SHIFTS, 
+		DISREGARD_SHIFTS;
 		public String toString() {
 			switch (this) {
 				case CONSIDER_SHIFTS:

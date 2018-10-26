@@ -6,100 +6,100 @@ import java.util.List;
 import org.jdom.Attribute;
 
 public class OpenDocFOMargins implements FOMargins, GetOpenDocAttributes {
-	private float bottom = -1;
-	private float top = -1;
-	private float left = -1;
-	private float right = -1;
-	
+	private Float top = null;
+	private Float bottom = null;
+	private Float left = null;
+	private Float right = null;
+	private boolean isPercentage = false;
+
 	@Override
 	public List<Attribute> getAttributes() {
-		List<Attribute> ret = new ArrayList<>();
-		if(bottom == top && top == left && left == right) {
-			ret.add(new Attribute(MARGIN, String.valueOf(bottom)));
-			return ret;
-		}
-		if(bottom > 0) {
-			ret.add(new Attribute(MARGIN_BOTTOM, String.valueOf(bottom)));
-		}
-		if(top > 0) {
-			ret.add(new Attribute(MARGIN_TOP, String.valueOf(top)));
-		}
-		if(left > 0) {
-			ret.add(new Attribute(MARGIN_LEFT, String.valueOf(left)));
-		}
-		if(right > 0) {
-			ret.add(new Attribute(MARGIN_RIGHT, String.valueOf(right)));
-		}
-		return ret;
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 	@Override
-	public void setMargin(float percent) {
-		bottom = top = left = right = percent;
+	public void setMargin(Float percent) {
+		top=bottom=left=right=percent;
+		this.isPercentage=true;
 	}
-	
+
 	@Override
-	public void setMarginBottom(float percent) {
-		this.bottom = percent;
-	}
-	
-	@Override
-	public float getMarginBottom() {
-		return bottom;
-	}
-	
-	@Override
-	public void setMarginTop(float percent) {
-		top = percent;
+	public void setMarginBottom(Float percent) {
+		bottom=percent;
 		
 	}
-	
+
 	@Override
-	public float getMarginTop() {
-		return top;
+	public Float getMarginBottom() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 	@Override
-	public void setMarginLeft(float percent) {
-		left = percent;
-		
+	public void setMarginTop(Float percent) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
-	public void setMarginRight(float percent) {
-		right = percent;
-		
+	public Float getMargintTop() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 	@Override
-	public float getMarginRight() {
-		return right;
+	public void setMarginLeft(Float percent) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
-	public float getMarginLeft() {
-		return left;
+	public void setMarginRight(Float percent) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
-	public void setMarginBottom(int sz) {
-		bottom = sz;
-		
+	public Float getMarginRight() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 	@Override
-	public void setMarginTop(int sz) {
-		top = sz;
+	public Float getMarginLeft() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
 	@Override
-	public void setMarginLeft(int sz) {
-		left = sz;
+	public void setMarginBottom(Integer sz) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
-	public void setMargineRight(int sz) {
-		right = sz;
+	public void setMargIntegerop(Integer sz) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
+	@Override
+	public void setMarginLeft(Integer sz) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setMargineRight(Integer sz) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public Boolean isMarginPercent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
