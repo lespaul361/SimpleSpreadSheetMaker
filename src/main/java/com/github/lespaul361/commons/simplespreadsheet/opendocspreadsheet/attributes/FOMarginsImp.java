@@ -31,17 +31,17 @@ public class FOMarginsImp implements FOMargins {
 			ret.add(att);
 		}
 
-		Attribute att = getAttribute(bottom);
+		att = getAttribute(bottom);
 		if (att != null) {
 			ret.add(att);
 		}
 
-		Attribute att = getAttribute(left);
+		att = getAttribute(left);
 		if (att != null) {
 			ret.add(att);
 		}
 
-		Attribute att = getAttribute(right);
+		att = getAttribute(right);
 		if (att != null) {
 			ret.add(att);
 		}
